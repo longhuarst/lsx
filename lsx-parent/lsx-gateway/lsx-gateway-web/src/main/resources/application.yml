@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: lsx-gateway-web
+  #配置跨域
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': #匹配所有请求
+            allowOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: #支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      #配置路由
+      routers:
+        #唯一标识符
+        - id: lsx_eureka_route
+          #用户请求需要路由到该服务【指定要路由的服务】
+          uri: http://localhost:18881
+          #路由断言，路由规则配置
+          predicates:
+          #用户请求的域名匹配配置，所有以lhc.com的请求都将被路由到 uri 指定的微服务去
+          - Host=lhc.com**
+
+server:
+  port: 18880
+  #端口
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: true

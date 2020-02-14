@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/lsx-gateway/gateway-user/gateway-user.iml" filepath="$PROJECT_DIR$/lsx-gateway/gateway-user/gateway-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/lsx.iml" filepath="$PROJECT_DIR$/.idea/lsx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-eureka/lsx-eureka.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-eureka/lsx-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-parent.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-parent.iml" />
+    </modules>
+  </component>
+</project>

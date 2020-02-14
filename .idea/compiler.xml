@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gateway-user" />
+        <module name="lsx-gateway-web" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gateway-user" target="1.5" />
+      <module name="lsx-eureka" target="1.8" />
+      <module name="lsx-gateway" target="1.8" />
+      <module name="lsx-gateway-web" target="1.8" />
+      <module name="lsx-parent" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lsx-eureka" options="-parameters" />
+      <module name="lsx-gateway" options="-parameters" />
+      <module name="lsx-gateway-web" options="-parameters" />
+      <module name="lsx-parent" options="-parameters" />
+    </option>
+  </component>
+</project>
