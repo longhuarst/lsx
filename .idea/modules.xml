@@ -4,10 +4,17 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/lsx-gateway/gateway-user/gateway-user.iml" filepath="$PROJECT_DIR$/lsx-gateway/gateway-user/gateway-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/lsx.iml" filepath="$PROJECT_DIR$/.idea/lsx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-common/lsx-common.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-common/lsx-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-common-db/lsx-common-db.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-common-db/lsx-common-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-eureka/lsx-eureka.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-eureka/lsx-eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-parent.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" />
     </modules>
   </component>
 </project>

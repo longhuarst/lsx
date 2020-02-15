@@ -16,6 +16,10 @@
     <modules>
         <module>lsx-gateway</module>
         <module>lsx-eureka</module>
+        <module>lsx-service</module>
+        <module>lsx-service-api</module>
+        <module>lsx-common</module>
+        <module>lsx-common-db</module>
     </modules>
 
 
@@ -64,9 +68,31 @@
         </dependency>
 
 
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-web</artifactId>-->
+<!--        </dependency>-->
+
+
+        <!-- spring actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+
+        <!-- spring web   有冲突-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-web</artifactId>-->
+<!--        </dependency>-->
+
+
+        <!-- jwt 鉴权 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
         </dependency>
 
     </dependencies>

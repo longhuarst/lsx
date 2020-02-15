@@ -6,24 +6,43 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="gateway-user" />
+        <module name="lsx-common-db" />
+        <module name="lsx-eureka" />
+        <module name="lsx-service-user-api" />
+        <module name="lsx-service-user" />
         <module name="lsx-gateway-web" />
+        <module name="lsx-service-test" />
+        <module name="gateway-user" />
+        <module name="lsx-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="gateway-user" target="1.5" />
+      <module name="lsx-common" target="1.8" />
+      <module name="lsx-common-db" target="1.8" />
       <module name="lsx-eureka" target="1.8" />
       <module name="lsx-gateway" target="1.8" />
       <module name="lsx-gateway-web" target="1.8" />
       <module name="lsx-parent" target="1.8" />
+      <module name="lsx-service" target="1.8" />
+      <module name="lsx-service-api" target="1.8" />
+      <module name="lsx-service-test" target="1.8" />
+      <module name="lsx-service-user" target="1.8" />
+      <module name="lsx-service-user-api" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lsx-common" options="-parameters" />
+      <module name="lsx-common-db" options="-parameters" />
       <module name="lsx-eureka" options="-parameters" />
       <module name="lsx-gateway" options="-parameters" />
       <module name="lsx-gateway-web" options="-parameters" />
       <module name="lsx-parent" options="-parameters" />
+      <module name="lsx-service-api" options="-parameters" />
+      <module name="lsx-service-test" options="-parameters" />
+      <module name="lsx-service-user" options="-parameters" />
+      <module name="lsx-service-user-api" options="-parameters" />
     </option>
   </component>
 </project>

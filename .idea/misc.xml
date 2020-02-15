@@ -12,8 +12,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/lsx-gateway/pom.xml" />
-        <option value="$PROJECT_DIR$/lsx-parent/lsx-gateway-web/pom.xml" />
+        <option value="$PROJECT_DIR$/lsx-parent/lsx-service-user/pom.xml" />
       </set>
     </option>
   </component>

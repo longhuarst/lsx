@@ -12,7 +12,7 @@
     <artifactId>lsx-eureka</artifactId>
 
 
-    <packaging>pom</packaging>
+<!--    <packaging>pom</packaging>-->
 
 
     <description>

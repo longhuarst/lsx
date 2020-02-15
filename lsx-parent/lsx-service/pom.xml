@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>lsx-parent</artifactId>
+        <groupId>org.lsx.web</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>lsx-service</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>lsx-service-test</module>
+        <module>lsx-service-user</module>
+    </modules>
+
+
+
+
+    <dependencies>
+
+        <!-- common -->
+        <!-- 对 lsx-common 的依赖 -->
+        <dependency>
+            <groupId>org.lsx.web</groupId>
+            <artifactId>lsx-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+
+        <!-- 对 lsx-common-db 的依赖 -->
+        <dependency>
+            <groupId>org.lsx.web</groupId>
+            <artifactId>lsx-common-db</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+
+
+</project>
