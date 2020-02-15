@@ -15,6 +15,7 @@
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-user-oauth/lsx-user-oauth.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-user-oauth/lsx-user-oauth.iml" />
     </modules>
   </component>
 </project>

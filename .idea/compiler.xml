@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="lsx-common-db" />
         <module name="lsx-eureka" />
+        <module name="lsx-user-oauth" />
         <module name="lsx-service-user-api" />
         <module name="lsx-service-user" />
         <module name="lsx-gateway-web" />
@@ -29,6 +30,7 @@
       <module name="lsx-service-test" target="1.8" />
       <module name="lsx-service-user" target="1.8" />
       <module name="lsx-service-user-api" target="1.8" />
+      <module name="lsx-user-oauth" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -43,6 +45,7 @@
       <module name="lsx-service-test" options="-parameters" />
       <module name="lsx-service-user" options="-parameters" />
       <module name="lsx-service-user-api" options="-parameters" />
+      <module name="lsx-user-oauth" options="-parameters" />
     </option>
   </component>
 </project>
