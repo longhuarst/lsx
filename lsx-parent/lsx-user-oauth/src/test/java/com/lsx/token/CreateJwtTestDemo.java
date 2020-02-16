@@ -3,6 +3,7 @@ package com.lsx.token;
 import com.alibaba.fastjson.JSON;
 
 import com.lsx.oauth.OAuthApplication;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,12 +13,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaSigner;
+import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +67,38 @@ public class CreateJwtTestDemo {
         String token = jwt.getEncoded();
 
         System.out.println(token);
+    }
+
+    /*
+    * 解析令牌
+    * */
+    @Test
+    public void TestDecode() {
+        String token = "";
+        String publicKey = "";
+
+        Jwt jwt = JwtHelper.decodeAndVerify(
+                token,
+                new RsaVerifier(publicKey)
+        );
+
+        String claims = jwt.getClaims();
+        System.out.println(claims);
+    }
+
+
+    @Test
+    public void testDecodeBase64() throws Exception{
+        //basic
+        String str = "";
+        byte[] decode = Base64.getDecoder().decode(str);
+        String decodeStr = new String(decode, "UTF-8");
+
+        System.out.println(decodeStr);
+
+
+        
+
     }
 
 }
