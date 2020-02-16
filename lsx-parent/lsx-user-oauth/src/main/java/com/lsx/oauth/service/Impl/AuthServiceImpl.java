@@ -51,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthToken login(String username, String password, String clientId, String clientSecret) {
 
         //1.申请令牌
-        ServiceInstance serviceInstance = loadBalancerClient.choose("user-auth");
+        ServiceInstance serviceInstance = loadBalancerClient.choose("lsx-user-oauth"); //这里的serviceid 是微服务的名字 在application.yml 中指定 spring.application.name
         URI uri = serviceInstance.getUri();
         String url = uri+"/oauth/token";
 
@@ -68,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
             @Override
             public void handleError(ClientHttpResponse response) throws IOException {
                 //这里原来是 400 && 401 我改成了 400 || 401
-                if (response.getRawStatusCode() != 400 || response.getRawStatusCode()!= 401)
+                if (response.getRawStatusCode() != 400 && response.getRawStatusCode()!= 401)
                     super.handleError(response);
             }
         });

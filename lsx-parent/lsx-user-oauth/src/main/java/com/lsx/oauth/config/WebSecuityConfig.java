@@ -26,6 +26,7 @@ public class WebSecuityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         //super.configure(web);
+        System.out.println("void configure(WebSecurity web) throws Exception");
         web.ignoring().antMatchers("/oauth/login",
                 "/oauth/logout",
                 "/oauth/toLogin",
@@ -43,7 +44,6 @@ public class WebSecuityConfig extends WebSecurityConfigurerAdapter {
     * @throws Exception
     * */
     @Bean
-
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         //return super.authenticationManagerBean();
@@ -80,6 +80,6 @@ public class WebSecuityConfig extends WebSecurityConfigurerAdapter {
 
         //开启表单登陆
         http.formLogin().loginPage("/oauth/toLogin")//设置访问登陆页面的路径
-                .loginProcessingUrl("oauth/login");//设置执行登陆操作的路径
+                   .loginProcessingUrl("oauth/login");//设置执行登陆操作的路径
     }
 }

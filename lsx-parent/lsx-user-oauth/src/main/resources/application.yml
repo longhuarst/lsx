@@ -1,0 +1,49 @@
+
+spring:
+  application:
+    name: lsx-user-oauth
+  redis:
+    host: localhost
+    port: 16379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/lsx-web?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: QWER1234
+  main:
+    allow-bean-definition-overriding: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:18881/eureka
+
+auth:
+  ttl: 3600 #token存储到redis的过期时间
+  clientId: lsx
+  #客户端密钥
+  clientSecret: lsxlsx
+  cookieDomain: localhost
+  cookieMaxAge: -1
+
+
+#本地证书和密钥密码配置
+#公钥加密   --  私钥解密   ---》非对称加密算法，RSA
+encrypt:
+  key-store:
+    #证书路径
+    location: classpath:/lsx.jks
+    #证书的密钥
+    secret: lsxlsx
+    #证书的别名
+    alias: lsx
+    #证书的密码
+    password: lsxlsx
+server:
+  port: 18884
+
+debug: true
+
+lstest: test
