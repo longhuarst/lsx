@@ -52,6 +52,12 @@ spring:
           - Path=/user/**
         filters:
           - StripPrefix=1
+      - id: lsx_user_oauth_route
+        uri: lb://lsx-user-oauth
+        predicates:
+          - Path=/oauth/**
+        filters:
+          - StripPrefix=1
   redis:
     host: localhost
     port: 16379
