@@ -16,4 +16,12 @@ public class Test {
         return "test";
     }
 
+
+
+
+    @RequestMapping("permitTest")
+    public String permitTest(){
+        return "permitTest";
+    }
+
 }

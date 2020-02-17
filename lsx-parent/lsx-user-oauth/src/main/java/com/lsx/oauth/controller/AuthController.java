@@ -6,6 +6,8 @@ import com.lsx.oauth.util.CookieUtil;
 import entity.Result;
 import entity.StatusCode;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,9 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletResponse;
 
+
 @Controller
 @RequestMapping("/oauth")
 public class AuthController {
+
+
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
+
 
     @Autowired
     private AuthService authService;
@@ -43,6 +50,7 @@ public class AuthController {
     @PostMapping("/login")
     @ResponseBody
     public Result login(String username, String password, HttpServletResponse response) throws RuntimeErrorException {
+        System.out.println("Result login(String username, String password, HttpServletResponse response) throws RuntimeErrorException");
         //校验参数
         if (StringUtils.isEmpty(username)){
             throw new RuntimeException("请输入用户名");
@@ -51,8 +59,12 @@ public class AuthController {
             throw new RuntimeException("请输入密码");
         }
 
+
+        System.out.println("开始申请令牌");
         //申请令牌
         AuthToken authToken = authService.login(username, password, clientId, clientSecret);
+
+        System.out.println("申请令牌完毕");
 
         //将jti的值存入cookie中
         this.saveJtiToCookie(authToken.getJti(), response);

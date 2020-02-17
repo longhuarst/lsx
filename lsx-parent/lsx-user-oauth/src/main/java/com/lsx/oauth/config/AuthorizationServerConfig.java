@@ -55,23 +55,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     AuthenticationManager authenticationManager;
 
     //授权认证管理器【授权码模式模式】
-    @Autowired
-    AuthorizationCodeServices authorizationCodeServices;
+//    @Autowired
+//    AuthorizationCodeServices authorizationCodeServices;
 
-    @Bean
-    public AuthorizationCodeServices authCodeService(){
-        return new AuthorizationCodeServices() {
-            @Override
-            public String createAuthorizationCode(OAuth2Authentication oAuth2Authentication) {
-                return null;
-            }
-
-            @Override
-            public OAuth2Authentication consumeAuthorizationCode(String s) throws InvalidGrantException {
-                return null;
-            }
-        };
-    }
+//    @Bean
+//    public AuthorizationCodeServices authCodeService(){
+//        return new AuthorizationCodeServices() {
+//            @Override
+//            public String createAuthorizationCode(OAuth2Authentication oAuth2Authentication) {
+//                return null;
+//            }
+//
+//            @Override
+//            public OAuth2Authentication consumeAuthorizationCode(String s) throws InvalidGrantException {
+//                return null;
+//            }
+//        };
+//    }
 
 
     //令牌持久化存储接口
@@ -103,10 +103,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(new BCryptPasswordEncoder().encode("lsxlsx"))//客户端秘钥
                 .resourceIds("res1")//客户端可以访问的资源列表
                 .authorizedGrantTypes("authorization_code","password","client_credentials","implicit","refresh_token")//该cleint允许的5种授权类型
-                .scopes("all")//允许的授权范围  -- 客户端的权限
+                .scopes("all","app")//允许的授权范围  -- 客户端的权限
                 .autoApprove(false) // -- false --> 如果是授权码模式，会跳转到授权页面，  true-->直接授权
                 //加上验证回调地址
-                .redirectUris("http://");//
+                .redirectUris("https://www.baidu.com");//
 
 
         //super.configure(clients);
@@ -122,12 +122,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
-                .accessTokenConverter(jwtAccessTokenConverter)//
+//                .accessTokenConverter(jwtAccessTokenConverter)//
                 .authenticationManager(authenticationManager)//认证管理器 【密码模式需要】
-                .authorizationCodeServices(authorizationCodeServices)//授权码模式需要
+//                .authorizationCodeServices(authorizationCodeServices)//授权码模式需要      这个 需要自己构建 authorizationCodeServices @bean   获取授权吗 没有这个也能获取到
                 .tokenServices(tokenService())//令牌管理服务 【不管是 密码 还是 授权码 模式，这个管理服务都必须要】
                 .tokenStore(tokenStore) //令牌存储
-                .allowedTokenEndpointRequestMethods(HttpMethod.POST)//允许post提交
+//                .allowedTokenEndpointRequestMethods(HttpMethod.POST)//允许post提交
                 .userDetailsService(userDetailService); //用户信息service
 
 
@@ -143,8 +143,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-       security.allowFormAuthenticationForClients()
-               .passwordEncoder(new BCryptPasswordEncoder())
+       security
+               //.allowFormAuthenticationForClients()
+//               .passwordEncoder(new BCryptPasswordEncoder())
                .tokenKeyAccess("permitAll()")// oauth/token_key
                .allowFormAuthenticationForClients()//允许表单认证
                .checkTokenAccess("permitAll()");//检测令牌  oauth/check_token

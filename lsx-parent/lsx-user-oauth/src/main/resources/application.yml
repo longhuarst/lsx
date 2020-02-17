@@ -12,6 +12,8 @@ spring:
     password: QWER1234
   main:
     allow-bean-definition-overriding: true
+  jpa:
+    show-sql: true
 
 eureka:
   instance:

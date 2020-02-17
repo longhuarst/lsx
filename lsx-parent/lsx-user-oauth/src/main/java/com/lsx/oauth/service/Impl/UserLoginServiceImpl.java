@@ -35,6 +35,9 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
     public AuthToken login(String username, String password, String clientId, String clientSecret, String grantType) throws Exception {
 
+
+        System.out.println("AuthToken login(String username, String password, String clientId, String clientSecret, String grantType) throws Exception");
+
         //获取指定服务的微服务地址
         ServiceInstance serviceInstance = loadBalancerClient.choose("lsx-user-oauth");
 
