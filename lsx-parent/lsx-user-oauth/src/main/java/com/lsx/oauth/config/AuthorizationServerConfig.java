@@ -4,16 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.bootstrap.encrypt.KeyProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -23,6 +29,11 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.security.KeyPair;
 
+/*
+* \
+*   授权服务配置
+*
+* */
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -39,9 +50,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     UserDetailServiceImpl userDetailService;
 
-    //授权认证管理器
+    //授权认证管理器【密码模式】
     @Autowired
     AuthenticationManager authenticationManager;
+
+    //授权认证管理器【授权码模式模式】
+    @Autowired
+    AuthorizationCodeServices authorizationCodeServices;
+
+    @Bean
+    public AuthorizationCodeServices authCodeService(){
+        return new AuthorizationCodeServices() {
+            @Override
+            public String createAuthorizationCode(OAuth2Authentication oAuth2Authentication) {
+                return null;
+            }
+
+            @Override
+            public OAuth2Authentication consumeAuthorizationCode(String s) throws InvalidGrantException {
+                return null;
+            }
+        };
+    }
+
 
     //令牌持久化存储接口
     @Autowired
@@ -53,34 +84,59 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     /*
     * 客户端信息配置
+     * 用来配置客户端详情服务（ClientDetailsService），客户端详情信息在这里进行初始化，你能够把客户端详情信息写死在这里或者通过数据库才存取详情信息
     * @param clients
     * @throws Exception
     * */
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource).clients(clientDetails());
+
+
+        //数据库中 查找
+        //clients.jdbc(dataSource).clients(clientDetails());
+
+
+        //使用 in-memory存储
+        clients.inMemory()//使用in-memory存储
+                .withClient("lsx")//client_id
+                .secret(new BCryptPasswordEncoder().encode("lsxlsx"))//客户端秘钥
+                .resourceIds("res1")//客户端可以访问的资源列表
+                .authorizedGrantTypes("authorization_code","password","client_credentials","implicit","refresh_token")//该cleint允许的5种授权类型
+                .scopes("all")//允许的授权范围  -- 客户端的权限
+                .autoApprove(false) // -- false --> 如果是授权码模式，会跳转到授权页面，  true-->直接授权
+                //加上验证回调地址
+                .redirectUris("http://");//
+
+
         //super.configure(clients);
     }
 
     /*
     * 授权服务器端点配置
+    * 用于配置令牌（token）的访问端点和令牌服务（token services）
     * @param endpoints
     * @throws Exception
     * */
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.accessTokenConverter(jwtAccessTokenConverter)
-                .authenticationManager(authenticationManager)//认证管理器
+        endpoints
+                .accessTokenConverter(jwtAccessTokenConverter)//
+                .authenticationManager(authenticationManager)//认证管理器 【密码模式需要】
+                .authorizationCodeServices(authorizationCodeServices)//授权码模式需要
+                .tokenServices(tokenService())//令牌管理服务 【不管是 密码 还是 授权码 模式，这个管理服务都必须要】
                 .tokenStore(tokenStore) //令牌存储
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST)//允许post提交
                 .userDetailsService(userDetailService); //用户信息service
+
 
         //super.configure(endpoints);
     }
 
     /*
     * 授权服务器的安全配置
+    * 用于配置令牌端点的安全约束【安全策略】
     * @param security
     * @throws Exception
     * */
@@ -89,8 +145,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
        security.allowFormAuthenticationForClients()
                .passwordEncoder(new BCryptPasswordEncoder())
-               .tokenKeyAccess("permitAll()")
-               .checkTokenAccess("isAuthenticated()");
+               .tokenKeyAccess("permitAll()")// oauth/token_key
+               .allowFormAuthenticationForClients()//允许表单认证
+               .checkTokenAccess("permitAll()");//检测令牌  oauth/check_token
         //super.configure(security);
     }
 
@@ -109,11 +166,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new JdbcClientDetailsService(dataSource);
     }
 
-    @Bean
-    @Autowired
-    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter){
-        return new JwtTokenStore(jwtAccessTokenConverter);
-    }
 
     /*
     * jwt令牌转换器
@@ -135,4 +187,53 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         return converter;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Autowired
+    ClientDetailsService clientDetailsService;
+
+
+    @Bean
+    public AuthorizationServerTokenServices tokenService(){
+        DefaultTokenServices service = new DefaultTokenServices();
+        service.setClientDetailsService(clientDetailsService);//客户端信息服务
+        service.setSupportRefreshToken(true);//是否产生刷新令牌
+        service.setTokenStore(tokenStore);//令牌存储策略
+        service.setAccessTokenValiditySeconds(7200);//令牌默认有效期2小时
+        service.setRefreshTokenValiditySeconds(259200);//刷新令牌默认有效期3天
+        return service;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
