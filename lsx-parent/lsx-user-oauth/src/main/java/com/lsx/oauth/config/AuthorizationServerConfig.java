@@ -127,7 +127,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //                .authorizationCodeServices(authorizationCodeServices)//授权码模式需要      这个 需要自己构建 authorizationCodeServices @bean   获取授权吗 没有这个也能获取到
                 .tokenServices(tokenService())//令牌管理服务 【不管是 密码 还是 授权码 模式，这个管理服务都必须要】
                 .tokenStore(tokenStore) //令牌存储
-//                .allowedTokenEndpointRequestMethods(HttpMethod.POST)//允许post提交
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST)//允许post提交
                 .userDetailsService(userDetailService); //用户信息service
 
 
@@ -145,7 +145,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
        security
                //.allowFormAuthenticationForClients()
-//               .passwordEncoder(new BCryptPasswordEncoder())
+               .passwordEncoder(new BCryptPasswordEncoder())
                .tokenKeyAccess("permitAll()")// oauth/token_key
                .allowFormAuthenticationForClients()//允许表单认证
                .checkTokenAccess("permitAll()");//检测令牌  oauth/check_token

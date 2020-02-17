@@ -106,8 +106,8 @@ public class WebSecuityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("longhua")
-                .password(new BCryptPasswordEncoder().encode("longhua"))
+                .withUser("lsx")
+                .password(new BCryptPasswordEncoder().encode("lsxlsx"))
                 .roles("USER");
 
     }
