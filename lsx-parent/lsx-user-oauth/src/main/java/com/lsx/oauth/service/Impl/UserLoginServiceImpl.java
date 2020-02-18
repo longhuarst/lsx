@@ -32,6 +32,8 @@ public class UserLoginServiceImpl implements UserLoginService {
 
 
 
+    //   用户登陆  -->   用用户名和 密码 获取令牌  若成功则返回令牌  失败则 提示失败，
+    //  之后用户 携带token 进行服务访问。
     @Override
     public AuthToken login(String username, String password, String clientId, String clientSecret, String grantType) throws Exception {
 

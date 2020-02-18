@@ -14,20 +14,15 @@ public class TokenConfig {
 
 
     //令牌的存储策略
-    @Bean
-    public TokenStore tokenStore(){
-        //内存方式，生成普通令牌
-        return new InMemoryTokenStore();
-    }
-
-
-
-    //使用 jwt 令牌
 //    @Bean
-//    @Autowired
-//    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter){
-//        return new JwtTokenStore(jwtAccessTokenConverter);
+//    public TokenStore tokenStore(){
+//        //内存方式，生成普通令牌
+//        return new InMemoryTokenStore();
 //    }
+
+
+
+
 
 
 

@@ -93,8 +93,11 @@ public class WebSecuityConfig extends WebSecurityConfigurerAdapter {
                     .hasRole("USER");   //其他请求都需要经过认证
 
         //开启表单登陆
-//        http.formLogin().loginPage("/oauth/toLogin")//设置访问登陆页面的路径
-//                   .loginProcessingUrl("oauth/login");//设置执行登陆操作的路径
+        http.formLogin().loginPage("/oauth/toLogin")//设置访问登陆页面的路径
+                   .loginProcessingUrl("oauth/login");//设置执行登陆操作的路径
+
+
+
     }
 
 
@@ -108,7 +111,11 @@ public class WebSecuityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("lsx")
                 .password(new BCryptPasswordEncoder().encode("lsxlsx"))
-                .roles("USER");
+                .roles("USER")
+                .and()
+                .withUser("longhua")
+                .password(new BCryptPasswordEncoder().encode("longhua"))
+                .roles("ADMIN");
 
     }
 
