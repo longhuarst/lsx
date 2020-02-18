@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @SpringBootApplication
 @EnableEurekaClient
+
 public class TestApplication {
 
 

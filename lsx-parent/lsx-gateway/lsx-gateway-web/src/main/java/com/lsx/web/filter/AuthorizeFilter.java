@@ -68,21 +68,42 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
             return response.setComplete();
         }
 
-        //如果有令牌，则校验令牌是否有效
-        try {
-            JwtUtil.parseJWT(token);
+//        //如果有令牌，则校验令牌是否有效
+//        try {
+//            JwtUtil.parseJWT(token);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            //无效拦截
+//            //设置没有权限的状态吗 401
+//            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+//            //响应空数据
+//            return response.setComplete();
+//        }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            //无效拦截
+        //如果令牌为空 则 不允许访问 直接拦截
+        if (StringUtils.isEmpty(token)){
             //设置没有权限的状态吗 401
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             //响应空数据
             return response.setComplete();
+        }else{
+            //如果当前令牌没有 bearer前缀，则添加
+            if (!token.startsWith("bearer") && !token.startsWith("BEARER")){
+                token = "bearer "+ token;
+            }
         }
 
-        //将令牌封装到头文件中
-        request.mutate().header(AUTHORIZE_TOKEN,token);
+        if (!hasToken){
+            //如果请求头没有  则加入
+            //将令牌封装到头文件中
+            request.mutate().header(AUTHORIZE_TOKEN,token);
+        }
+
+
+
+
+
 
 
         //放行

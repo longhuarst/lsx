@@ -36,6 +36,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     * */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //==============================  客户端信息认证  start ==============================
+
+
         //取出身份，如果身份为空则说明没有认证
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //没有认证统一采用httpbasic认证，httpbasic中存储了client_id 和 client_secret, 开始认证 client_id 和 client_secret
@@ -47,10 +50,19 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 //静态方式
                 //return new User(username, new BCryptPasswordEncoder.encode(clientSecret), AuthorityUtils.commaSeparatedStringToAuthorityList(""));
                 //数据库查找方式
-                return new User(username, clientSecret, AuthorityUtils.commaSeparatedStringToAuthorityList(""));
+                return new User(username,   //客户端ID
+                        clientSecret,   //密钥   数据库中已经加过密  不需要
+                        AuthorityUtils.commaSeparatedStringToAuthorityList(""));//权限
 
             }
         }
+
+        //==============================  客户端信息认证  end ==============================
+
+
+
+
+        //==============================  用户账号密码信息认证  start ==============================
 
         if (StringUtils.isEmpty(username)){
             return null;
@@ -64,6 +76,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
         //创建user对象
         String permission = "";
         UserJwt userDetails = new UserJwt(username, user.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(permission));
+
+        //==============================  用户账号密码信息认证  end ==============================
+
 
         return userDetails;
     }

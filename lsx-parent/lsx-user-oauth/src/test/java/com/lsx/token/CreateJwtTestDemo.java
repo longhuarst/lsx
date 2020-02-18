@@ -18,6 +18,7 @@ import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
+import java.io.IOException;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.Base64;
@@ -69,6 +70,18 @@ public class CreateJwtTestDemo {
         System.out.println(token);
     }
 
+
+
+    @Test
+    public void testPublicKeyFile(){
+        ClassPathResource classPathResource = new ClassPathResource("public.key");
+
+        try {
+            System.out.println(classPathResource.contentLength());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /*
     * 解析令牌
     * */
