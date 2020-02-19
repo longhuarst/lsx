@@ -27,4 +27,4 @@ eureka:
     prefer-ip-address: true
 
 
-
+debug: true

@@ -35,6 +35,17 @@ public class FastDFSFile implements Serializable {
     //文件创建者
     private String author;
 
+    public FastDFSFile(String name, byte[] content) {
+        this.name = name;
+        this.content = content;
+    }
+
+    public FastDFSFile(String name, byte[] content, String ext) {
+        this.name = name;
+        this.content = content;
+        this.ext = ext;
+    }
+
     public String getName() {
         return name;
     }

@@ -48,7 +48,7 @@ public class FastDFSUtil {
     * 文件上传
     * @param fastDFSFile
     * */
-    public void upload(FastDFSFile fastDFSFile) throws Exception {
+    public static void upload(FastDFSFile fastDFSFile) throws Exception {
         //附加参数
         NameValuePair [] metaList = new NameValuePair[1];
         metaList[0] = new NameValuePair("author",fastDFSFile.getAuthor());//添加作者
