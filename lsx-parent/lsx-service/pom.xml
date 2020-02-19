@@ -14,6 +14,7 @@
     <modules>
         <module>lsx-service-test</module>
         <module>lsx-service-user</module>
+        <module>lsx-service-file</module>
     </modules>
 
 

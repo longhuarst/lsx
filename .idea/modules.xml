@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-parent.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-file/lsx-service-file.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-file/lsx-service-file.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" />
