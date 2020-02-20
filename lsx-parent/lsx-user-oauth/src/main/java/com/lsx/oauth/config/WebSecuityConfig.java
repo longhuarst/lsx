@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -104,23 +106,36 @@ public class WebSecuityConfig extends WebSecurityConfigurerAdapter {
 
 
     /*
-    * 设置内存账户
-    * */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("lsx")
-                .password(new BCryptPasswordEncoder().encode("lsxlsx"))
-                .roles("USER")
-                .and()
-                .withUser("longhua")
-                .password(new BCryptPasswordEncoder().encode("longhua"))
-                .roles("ADMIN");
-
-    }
-
-
-
+//    * 设置内存账户
+//    * */
+//    //这个似乎不能和 自定义的 同时使用
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("lsx")
+//                .password(new BCryptPasswordEncoder().encode("lsxlsx"))
+//                .roles("USER")
+//                .and()
+//                .withUser("longhua")
+//                .password(new BCryptPasswordEncoder().encode("longhua"))
+//                .roles("ADMIN");
+//
+//    }
 
 
+//    @Bean
+//    UserDetailsService customUserService(){
+//        return new CustomUserService();
+//    }
+//
+//
+//    /*
+//    *
+//    * */
+//
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(customUserService()); //自定义的userDetailsService 服务
+//        //super.configure(auth);
+//    }
 }

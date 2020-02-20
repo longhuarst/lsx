@@ -26,5 +26,9 @@ eureka:
   instance:
     prefer-ip-address: true
 
+fastdfs:
+  server:
+    url: http://10.211.55.10:8080/
+
 
 debug: true
