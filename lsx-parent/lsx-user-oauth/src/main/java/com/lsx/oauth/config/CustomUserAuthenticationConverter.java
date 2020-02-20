@@ -4,6 +4,7 @@ package com.lsx.oauth.config;
 
 import com.lsx.oauth.util.UserJwt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,8 @@ import java.util.Map;
 @Component
 public class CustomUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
 
+
+//    @Qualifier("inMemoryUserDetailsManager")
     @Autowired
     UserDetailsService userDetailsService;
 

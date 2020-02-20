@@ -6,6 +6,7 @@ import com.lsx.file.file.FastDFSFile;
 import com.lsx.file.util.FastDFSUtil;
 import entity.Result;
 import entity.StatusCode;
+import org.csource.fastdfs.FileInfo;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,10 @@ public class FileUploadContller {
         return "test";
     }
 
+
+
+
+
     /*
     *
     * 文件上传
@@ -32,16 +37,78 @@ public class FileUploadContller {
 
         FastDFSFile fastDFSFile = new FastDFSFile(file.getOriginalFilename(),//文件名字
                 file.getBytes(),//文件字节数组
-                StringUtils.getFilename(file.getOriginalFilename()));//文件拓展名
+                StringUtils.getFilenameExtension(file.getOriginalFilename()));//文件拓展名
 
         //调用fastdfs 的将工具类文件上传到fastdfs中
-        FastDFSUtil.upload(fastDFSFile);
+        String [] storage = FastDFSUtil.upload(fastDFSFile);
 
-        return new Result(true, StatusCode.OK, "上传成功");
+
+        //拼接 url 地址
+        String url = FastDFSUtil.getTrackerInfo() + "/" + storage[0] + "/" + storage[1];
+
+
+
+        return new Result(true, StatusCode.OK, "上传成功",url);
 
     }
 
 
+
+    /*
+    *
+    * 获取文件信息
+    *
+    * */
+    @PostMapping("/info")
+    public Result info(@RequestParam("group") String group, @RequestParam("name") String name) throws Exception{
+
+        FileInfo fileInfo = FastDFSUtil.info(group,name);
+
+        return new Result(true, StatusCode.OK, "获取成功", fileInfo);
+    }
+
+
+
+    /*
+    * 下载文件
+    */
+//    @RequestMapping("download")
+//    public Result download(@RequestParam("group") String group, @RequestParam("name") String name) throws Exception{
+//
+//    }
+
+
+    /*
+    * 删除文件
+    * */
+    @RequestMapping("delete")
+    public Result delete(@RequestParam("group") String group, @RequestParam("name") String name) throws Exception{
+
+        if (FastDFSUtil.delete(group, name) == 0){
+            return new Result(true, StatusCode.OK, "删除成功");
+        }else{
+            return new Result(false, StatusCode.ERROR, "删除失败");
+        }
+    }
+
+
+
+    /*
+    * 获取Storeage信息
+    * */
+    @RequestMapping("storage")
+    public Result storage(@RequestParam("group") String group, @RequestParam("name") String name) throws Exception{
+        return new Result(true, StatusCode.OK, "获取成功", FastDFSUtil.getStorageInfo(group, name));
+    }
+
+
+    /*
+    * 获取Tracker信息
+    * */
+    @RequestMapping("tracker")
+    public Result tracker() throws Exception{
+        return new Result(true, StatusCode.OK, "获取成功", FastDFSUtil.getTrackerInfo());
+    }
 
 
 

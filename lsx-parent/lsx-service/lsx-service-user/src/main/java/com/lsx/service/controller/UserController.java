@@ -9,10 +9,7 @@ import entity.JwtUtil;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +23,8 @@ public class UserController {
 
     @Autowired
     UserRespository userRespository;
+
+
 
     /*
      * 用户登录
@@ -97,6 +96,16 @@ public class UserController {
 
         return new Result(true, StatusCode.OK, "注册成功", resUser);
 
+    }
+
+
+
+
+    @GetMapping("/findByUsername/{username}")
+    public Result<User> findByUsername(@PathVariable String username){
+        //调用UserService实现根据主键查询User
+        User user = userRespository.findByUsername(username);
+        return new Result<>(true, StatusCode.OK, "查询成功", user);
     }
 
 

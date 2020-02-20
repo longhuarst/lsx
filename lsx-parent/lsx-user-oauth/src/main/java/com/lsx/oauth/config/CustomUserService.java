@@ -1,9 +1,5 @@
 package com.lsx.oauth.config;
 
-/*
-* 自定义授权认证类
-* */
-
 import com.lsx.oauth.util.UserJwt;
 import com.lsx.service.feign.UserFeign;
 import org.apache.commons.lang.StringUtils;
@@ -19,8 +15,9 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Service;
 
+
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class CustomUserService implements UserDetailsService {
 
     @Autowired
     ClientDetailsService clientDetailsService;
@@ -29,11 +26,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private UserFeign userFeign;
 
     /*
-    * 自定义授权认证
-    * @param username
-    * @return
-    * @throws UsernameNotFoundException
-    * */
+     * 自定义授权认证
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     * */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //==============================  客户端信息认证  start ==============================
@@ -68,10 +65,24 @@ public class UserDetailServiceImpl implements UserDetailsService {
             return null;
         }
 
+
+        /*
+         *   从数据库中查询用户信息
+         *   1。 没有令牌， Feign 调用之前 生成令牌
+         *   2。 Feign 调用之前， 令牌需要携带过去
+         *   3。 Feign 调用之前， 令牌需要存放到Header文件中
+         *   4。 请求 -> Feign 调用 -> 拦截器 RequestInterceptor  -> Feign 调用之前拦截
+         **/
+
+
+
         //根据用户名查询用户信息
         //String pwd = new BCryptPasswordEncoder().encode("lsxlsx");
 
         com.lsx.service.entity.User user = userFeign.findUserInfo(username);
+
+
+        //
 
         //创建user对象
         String permission = "";
@@ -82,4 +93,5 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         return userDetails;
     }
+
 }
