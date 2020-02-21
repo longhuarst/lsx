@@ -35,13 +35,20 @@ public class UserLoginController {
     *
     * */
     @RequestMapping(value = "/login")
-    public Result login(String username, String password) throws Exception {
+    public Result login(String username, String password) {
 
 
         //授权模式
         String grantType = "password";
+        AuthToken authToken = null;
 
-        AuthToken authToken = userLoginService.login(username, password, clientId, clientSecret,grantType);
+        try {
+            authToken = userLoginService.login(username, password, clientId, clientSecret, grantType);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return new Result(false, StatusCode.LOGINERROR, "登陆失败 : "+e.getMessage());
+        }
 
         if (authToken != null){
             return new Result(true, StatusCode.OK, "登陆成功", authToken);

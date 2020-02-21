@@ -101,10 +101,16 @@ public class UserController {
 
 
 
-    @GetMapping("/findByUsername/{username}")
-    public Result<User> findByUsername(@PathVariable String username){
+    @PostMapping("/findByUsername/{username}")
+    public Result<User> findByUsername(@PathVariable("username") String username){
         //调用UserService实现根据主键查询User
+        System.out.println("feign ----> start ");
+        System.out.println("username = "+ username);
         User user = userRespository.findByUsername(username);
+        if (user == null){
+            System.out.println("result user == null");
+        }
+        System.out.println("feign ----> end ");
         return new Result<>(true, StatusCode.OK, "查询成功", user);
     }
 

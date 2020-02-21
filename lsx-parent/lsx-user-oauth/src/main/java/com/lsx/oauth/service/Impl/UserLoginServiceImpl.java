@@ -38,11 +38,21 @@ public class UserLoginServiceImpl implements UserLoginService {
     public AuthToken login(String username, String password, String clientId, String clientSecret, String grantType) throws Exception {
 
 
+
+
+
         System.out.println("AuthToken login(String username, String password, String clientId, String clientSecret, String grantType) throws Exception");
+
+        System.out.println("username = " + username);
 
         //获取指定服务的微服务地址
         ServiceInstance serviceInstance = loadBalancerClient.choose("lsx-user-oauth");
 
+
+        if (serviceInstance == null){
+            //
+            throw new Exception("无法连接负载均衡服务器");
+        }
 
         //请求调用的地址
         String url = serviceInstance.getUri()+"/oauth/token";
@@ -67,8 +77,14 @@ public class UserLoginServiceImpl implements UserLoginService {
         //2.提交方式
         //3.requestEntity 请求提交的数据信息封装 请求体｜请求头
         //4.responseType 返回数据需要转换的类型
-        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, Map.class);
-
+        ResponseEntity<Map> response = null;
+        try {
+            response = restTemplate.exchange(url, HttpMethod.POST, httpEntity, Map.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
         System.out.println(response.getBody());
 
         //用户登录后的令牌信息

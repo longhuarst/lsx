@@ -15,6 +15,7 @@ spring:
   jpa:
     show-sql: true
 
+
 eureka:
   instance:
     prefer-ip-address: true
@@ -29,6 +30,7 @@ auth:
   clientSecret: lsxlsx
   cookieDomain: localhost
   cookieMaxAge: -1
+
 
 
 #本地证书和密钥密码配置
@@ -49,3 +51,14 @@ server:
 debug: true
 
 lstest: test
+
+logging:
+  level:
+    root: debug
+ribbon:
+  eureka:
+    enabled: true
+
+feign:
+  hystrix:
+    enabled: true

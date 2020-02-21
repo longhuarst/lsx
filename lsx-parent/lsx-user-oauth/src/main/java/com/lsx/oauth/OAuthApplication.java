@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan(basePackages = "com.lsx.oauth.dao")
-@EnableFeignClients(basePackages = "com.lsx.service.feign")
+@EnableFeignClients (basePackages = "com.lsx.service.feign")
 public class OAuthApplication {
 
 

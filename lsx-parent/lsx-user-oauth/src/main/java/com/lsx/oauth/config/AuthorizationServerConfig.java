@@ -51,6 +51,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         //SpringSecurity 用户自定义授权认证类
 //    @Qualifier("inMemoryUserDetailsManager")
+
+
         @Autowired
         UserDetailsService userDetailsService;
 
@@ -100,21 +102,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             //数据库中 查找
             clients.jdbc(dataSource).clients(clientDetails());
 
-            String secret = new BCryptPasswordEncoder().encode("lsxlsx");
-            System.out.println("secret = " + secret);
+//            String secret = new BCryptPasswordEncoder().encode("lsxlsx");
+//            System.out.println("secret = " + secret);
 
             //使用 in-memory存储
-            clients.inMemory()//使用in-memory存储
-                    .withClient("lsx")//client_id
-                    .secret(secret)//客户端秘钥
-//                .resourceIds("res1")//客户端可以访问的资源列表
-                    .authorizedGrantTypes("authorization_code","password","client_credentials","implicit","refresh_token")//该cleint允许的5种授权类型
-                    .scopes("all","app")//允许的授权范围  -- 客户端的权限
-                    .autoApprove(false) // -- false --> 如果是授权码模式，会跳转到授权页面，  true-->直接授权
-//                .refreshTokenValiditySeconds(60)  //刷新令牌有效期
-//                .accessTokenValiditySeconds(60)   //访问令牌有效期
-                    //加上验证回调地址
-                    .redirectUris("https://www.baidu.com");//
+//            clients.inMemory()//使用in-memory存储
+//                    .withClient("lsx")//client_id
+//                    .secret(secret)//客户端秘钥
+////                .resourceIds("res1")//客户端可以访问的资源列表
+//                    .authorizedGrantTypes("authorization_code","password","client_credentials","implicit","refresh_token")//该cleint允许的5种授权类型
+//                    .scopes("all","app")//允许的授权范围  -- 客户端的权限
+//                    .autoApprove(false) // -- false --> 如果是授权码模式，会跳转到授权页面，  true-->直接授权
+////                .refreshTokenValiditySeconds(60)  //刷新令牌有效期
+////                .accessTokenValiditySeconds(60)   //访问令牌有效期
+//                    //加上验证回调地址
+//                    .redirectUris("https://www.baidu.com");//
 
 
             //super.configure(clients);

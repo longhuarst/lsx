@@ -32,4 +32,10 @@ eureka:
 
 debug: true
 
+ribbon:
+  eureka:
+    enabled: true
 
+feign:
+  hystrix:
+    enabled: true

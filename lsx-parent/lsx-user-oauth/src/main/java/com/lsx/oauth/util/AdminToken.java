@@ -2,17 +2,22 @@ package com.lsx.oauth.util;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaSigner;
 import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
+import org.springframework.stereotype.Component;
 
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+@Component
 public class AdminToken {
 
     //从配置文件中加载数据

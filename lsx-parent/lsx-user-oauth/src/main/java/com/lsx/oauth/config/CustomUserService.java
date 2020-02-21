@@ -36,10 +36,15 @@ public class CustomUserService implements UserDetailsService {
         //==============================  客户端信息认证  start ==============================
 
 
+        System.out.println("------------------ loadUserByUsername ---------------");
+        System.out.println("username = "+ username);
+
         //取出身份，如果身份为空则说明没有认证
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //没有认证统一采用httpbasic认证，httpbasic中存储了client_id 和 client_secret, 开始认证 client_id 和 client_secret
         if (authentication == null){
+            System.out.println("authentication null");
+            System.out.println("-->");
             ClientDetails clientDetails = clientDetailsService.loadClientByClientId(username);
             if (clientDetails!=null){
                 //密钥
@@ -61,6 +66,7 @@ public class CustomUserService implements UserDetailsService {
 
         //==============================  用户账号密码信息认证  start ==============================
 
+        System.out.println("user");
         if (StringUtils.isEmpty(username)){
             return null;
         }
@@ -79,13 +85,30 @@ public class CustomUserService implements UserDetailsService {
         //根据用户名查询用户信息
         //String pwd = new BCryptPasswordEncoder().encode("lsxlsx");
 
-        com.lsx.service.entity.User user = userFeign.findUserInfo(username);
+        com.lsx.service.entity.User user = null;
+        try{
+            user = userFeign.findByUsername(username).getData();
+
+//            System.out.println("user = "+ user.toString());
+
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+
+        System.out.println("userFeign 查询完毕");
+
+        if (user == null){
+            throw new UsernameNotFoundException("用户不存在");
+        }
+
 
 
         //
 
         //创建user对象
-        String permission = "";
+        String permission = user.getRole();
         UserJwt userDetails = new UserJwt(username, user.getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(permission));
 
         //==============================  用户账号密码信息认证  end ==============================
