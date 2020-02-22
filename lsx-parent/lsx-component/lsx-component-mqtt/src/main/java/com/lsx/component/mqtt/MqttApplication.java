@@ -2,6 +2,7 @@ package com.lsx.component.mqtt;
 
 
 import com.lsx.component.mqtt.mqtt.MqttDeserializer;
+import com.lsx.component.mqtt.mqtt.MqttProtocolResolver;
 import com.lsx.component.mqtt.mqtt.MqttSerializer;
 import com.lsx.component.mqtt.mqtt.MqttSuperSerializer;
 import org.springframework.boot.SpringApplication;
@@ -40,43 +41,43 @@ public class MqttApplication {
                 .run(args);
     }
 
-//
-//    @Bean
-//    public MessageChannel mqttInputChannel(){
-//        return new DirectChannel();
-//    }
-//
-//
-//    @Bean
-//    public MessageProducer inbound(){
-//
-//
-//
-//
-//
-//        MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(
-//                "tcp://localhost:1883",
-//                "testClient",
-//                "topic1",
-//                "topic2");
-//
-//        adapter.setCompletionTimeout(5000);
-//        adapter.setConverter(new DefaultPahoMessageConverter());
-//        adapter.setQos(1);
-//        adapter.setOutputChannel(mqttInputChannel());
-//        return adapter;
-//    }
-//
-//    @Bean
-//    @ServiceActivator(inputChannel = "mqttInputChannel")
-//    public MessageHandler handler(){
-//        return new MessageHandler() {
-//            @Override
-//            public void handleMessage(Message<?> message) throws MessagingException {
-//                System.out.println(message.getPayload());
-//            }
-//        };
-//    }
+
+    @Bean
+    public MessageChannel mqttInputChannel(){
+        return new DirectChannel();
+    }
+
+
+    @Bean
+    public MessageProducer inbound(){
+
+
+
+
+
+        MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(
+                "tcp://localhost:1883",
+                "testClient",
+                "topic1",
+                "topic2");
+
+        adapter.setCompletionTimeout(5000);
+        adapter.setConverter(new DefaultPahoMessageConverter());
+        adapter.setQos(1);
+        adapter.setOutputChannel(mqttInputChannel());
+        return adapter;
+    }
+
+    @Bean
+    @ServiceActivator(inputChannel = "mqttInputChannel")
+    public MessageHandler handler(){
+        return new MessageHandler() {
+            @Override
+            public void handleMessage(Message<?> message) throws MessagingException {
+                System.out.println(message.getPayload());
+            }
+        };
+    }
 
 
 
@@ -118,6 +119,8 @@ public class MqttApplication {
     public void messageHandler(Message<?> message){
         byte[] bytes = (byte[]) message.getPayload();
         System.out.println(new String(bytes));
+        //这里处理 mqtt 协议
+//        MqttProtocolResolver.resovler();
     }
 
 
