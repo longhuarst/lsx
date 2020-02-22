@@ -9,6 +9,7 @@
         <module name="lsx-service-file" />
         <module name="lsx-eureka" />
         <module name="lsx-user-oauth" />
+        <module name="lsx-service-order" />
         <module name="lsx-service-user-api" />
         <module name="lsx-common-db" />
         <module name="lsx-service-user" />
@@ -31,6 +32,7 @@
       <module name="lsx-service-api" target="1.8" />
       <module name="lsx-service-dashboard" target="1.8" />
       <module name="lsx-service-file" target="1.8" />
+      <module name="lsx-service-order" target="1.8" />
       <module name="lsx-service-test" target="1.8" />
       <module name="lsx-service-user" target="1.8" />
       <module name="lsx-service-user-api" target="1.8" />
@@ -48,6 +50,7 @@
       <module name="lsx-service-api" options="-parameters" />
       <module name="lsx-service-dashboard" options="-parameters" />
       <module name="lsx-service-file" options="-parameters" />
+      <module name="lsx-service-order" options="-parameters" />
       <module name="lsx-service-test" options="-parameters" />
       <module name="lsx-service-user" options="-parameters" />
       <module name="lsx-service-user-api" options="-parameters" />
