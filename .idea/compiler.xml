@@ -6,24 +6,27 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="lsx-service-file" />
+        <module name="lsx-service-user" />
         <module name="lsx-eureka" />
         <module name="lsx-user-oauth" />
-        <module name="lsx-service-order" />
-        <module name="lsx-service-user-api" />
         <module name="lsx-common-db" />
-        <module name="lsx-service-user" />
-        <module name="lsx-gateway-web" />
-        <module name="lsx-service-dashboard" />
-        <module name="lsx-service-test" />
         <module name="gateway-user" />
         <module name="lsx-common" />
+        <module name="lsx-service-dashboard" />
+        <module name="lsx-service-user-api" />
+        <module name="lsx-gateway-web" />
+        <module name="lsx-service-file" />
+        <module name="lsx-component-mqtt" />
+        <module name="lsx-service-order" />
+        <module name="lsx-service-test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="gateway-user" target="1.5" />
       <module name="lsx-common" target="1.8" />
       <module name="lsx-common-db" target="1.8" />
+      <module name="lsx-component" target="1.8" />
+      <module name="lsx-component-mqtt" target="1.8" />
       <module name="lsx-eureka" target="1.8" />
       <module name="lsx-gateway" target="1.8" />
       <module name="lsx-gateway-web" target="1.8" />
@@ -43,6 +46,8 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="lsx-common" options="-parameters" />
       <module name="lsx-common-db" options="-parameters" />
+      <module name="lsx-component" options="-parameters" />
+      <module name="lsx-component-mqtt" options="-parameters" />
       <module name="lsx-eureka" options="-parameters" />
       <module name="lsx-gateway" options="-parameters" />
       <module name="lsx-gateway-web" options="-parameters" />

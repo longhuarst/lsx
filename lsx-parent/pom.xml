@@ -21,6 +21,8 @@
         <module>lsx-common</module>
         <module>lsx-common-db</module>
         <module>lsx-user-oauth</module>
+        <module>lsx-component-mqtt</module>
+        <module>lsx-component</module>
     </modules>
 
 

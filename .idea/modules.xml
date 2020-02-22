@@ -6,6 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/lsx.iml" filepath="$PROJECT_DIR$/.idea/lsx.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-common/lsx-common.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-common/lsx-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-common-db/lsx-common-db.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-common-db/lsx-common-db.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component-mqtt/lsx-component-mqtt.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component-mqtt/lsx-component-mqtt.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-eureka/lsx-eureka.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-eureka/lsx-eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" />
