@@ -225,147 +225,220 @@ public class MqttSuperSerializer extends AbstractPooledBufferByteArraySerializer
 
         boolean debug = logger.isDebugEnabled();
 
+        if (debug){
+            logger.debug("doDeserialize");
+        }
+
+        //mqtt 解析 交付给 应用层处理，不再 在此解码器中执行
+
         int bite = inputStream.read();
-        if (bite < 0) {
-            throw new SoftEndOfStreamException("Stream closed between payloads");
-        }
-
-
-        if (framing == false){
-            fixHeadControlType = (bite >>4) & 0x0f;
-            fixHeadControlFlag = bite & 0x0f;
-        }
-
+        checkClosure(bite);
+        buffer[0] = (byte) bite;
+//        fixHeadLeftLength = lenEncoder(inputStream, null);
         if (debug){
-            logger.debug("固定报文 - 控制报文的类型 ： " + convertControlTypeFlag(fixHeadControlType,fixHeadControlFlag));
+            logger.debug("协议头：" + bite);
         }
 
-
-        qos = fixHeadControlFlag >> 1 & 0x3;
-
-
-        fixHeadLeftLength = lenEncoder(inputStream, null);
-
-
-        packetIdentifierFlag = false;
-        if (fixHeadControlType >= 3 && fixHeadControlType <= 11){
-            if (fixHeadControlType == 3){
-                //检查qos
-                if (qos > 0){
-                    //存在标识符
-                    packetIdentifierFlag = true;
-                }
-            }else{
-                //存在标识符
-                packetIdentifierFlag = true;
+        int fix_size = 1;
+        fixHeadLeftLength = 0;
+        for (int i=0; i<4; ++i){
+            fix_size++;
+            bite = inputStream.read();
+            checkClosure(bite);
+            buffer[i+1] = (byte)bite;
+            if (bite < 127){
+                fixHeadLeftLength += bite << (7 * (i));
+                break; //结束
             }
-
+            bite &= 0x7f;//去掉首位
+            fixHeadLeftLength += bite << (7 * (i));
+        }
+        if (debug)
+            logger.debug("剩余长度："+fixHeadLeftLength);
+        if (bite > 127){
+            throw new IOException("超过当前协议的最大传输大小：256MB = 268435455");
         }
 
-
-        if (debug){
-            logger.debug("剩余报文长度 : " + fixHeadLeftLength);
+        for (int i=0; i<fixHeadLeftLength; ++i){
+            bite = inputStream.read();
+            checkClosure(bite);
+            buffer[fix_size+i] = (byte)bite;
         }
 
-        if (packetIdentifierFlag){
-            packetIdentifier = packetIdentifierEncode(inputStream);
-            fixHeadLeftLength -= 2;
-            if (debug){
-                logger.debug("唯一标识符：" + packetIdentifier);
-            }
-        }else{
-            if (debug){
-                logger.debug("唯一标识符：不需要");
-            }
-        }
-
-
-        if (debug){
-            logger.debug("剩余报文长度 : " + fixHeadLeftLength);
-        }
-
-
-        if (fixHeadControlType == CONNECT){
-
-            getProtocolName(inputStream);
-
-//            //接下来4个字节为mqtt
-//            if (mqttCharEncoder(inputStream) != true){
-//                throw new IOException("CONNECT MQTT character 不匹配");
+        return copyToSizedArray(buffer, fixHeadLeftLength + fix_size);
+//
+//        int n = 0;
+//        try {
+////            if (bite != STX) {
+////                throw new MessageMappingException("Expected STX to begin message");
+////            }
+//            while ((bite = inputStream.read()) != ETX) {
+//
+//                buffer[n++] = (byte) bite;
+//                if (n >= getMaxMessageSize()) {
+//                    throw new IOException("ETX not found before max message length: "
+//                            + getMaxMessageSize());
+//                }
 //            }
-
-
-            //level
-            level = getByte(inputStream);
-
-            if (level != 4 && level != 3){
-                throw new IOException("当前仅支持 3.1.1 版本协议");
-                //还需要返回一个不支持的版本的报文 MQTT-3。1。1-CN page 21
-                // ToDo : mqtt 版本错误的应答  未实现
-            }
-
-            connectFlag = getByte(inputStream);
-
-            if (new Integer(connectFlag & 0x1) != 0){
-                //ToDo: mqtt 这个字段最后一位 不为0 直接关闭连接
-            }
-
-            if(new Integer(connectFlag & 0x80) == 0x80){
-                //用户名标志
-                //有效载荷包含 用户名
-            }else{
-                //有效载荷不包含用户名
-            }
-
-            if (new Integer(connectFlag & 0x40) == 0x40){
-                //密码标志
-                //有效载荷包含 密码
-            }else{
-                //有效载荷不包含 密码
-            }
-
-
-            //ToDo: 还有其他位 没有实现   P23
-
-
-
-            keepAlive = getKeepAlive(inputStream);
-
-            if (debug){
-                logger.debug("keep-alive = "+keepAlive + " 秒");
-            }
-
-
-            fixHeadLeftLength -= 6+protocolName.length(); // connect 报文的 可变长度位 10
-
-        }
-
-
-        int n = 0;
-        try {
-
-            while (n < fixHeadLeftLength) {
-                bite = inputStream.read();
-                checkClosure(bite);
-                buffer[n++] = (byte) bite;
-            }
-
-            byte[] payload = copyToSizedArray(buffer, n);
-
-            if (debug){
-                logger.debug("payload = "+ new String(payload));
-            }
-
-            return payload;
-        }
-        catch (IOException e) {
-            publishEvent(e, buffer, n);
-            throw e;
-        }
-        catch (RuntimeException e) {
-            publishEvent(e, buffer, n);
-            throw e;
-        }
+//            return copyToSizedArray(buffer, n);
+//        }
+//        catch (IOException e) {
+//            publishEvent(e, buffer, n);
+//            throw e;
+//        }
+//        catch (RuntimeException e) {
+//            publishEvent(e, buffer, n);
+//            throw e;
+//        }
+//
+//
+//
+//
+//
+//
+//        boolean debug = logger.isDebugEnabled();
+//
+//        int bite = inputStream.read();
+//        if (bite < 0) {
+//            throw new SoftEndOfStreamException("Stream closed between payloads");
+//        }
+//
+//
+//        if (framing == false){
+//            fixHeadControlType = (bite >>4) & 0x0f;
+//            fixHeadControlFlag = bite & 0x0f;
+//        }
+//
+//        if (debug){
+//            logger.debug("固定报文 - 控制报文的类型 ： " + convertControlTypeFlag(fixHeadControlType,fixHeadControlFlag));
+//        }
+//
+//
+//        qos = fixHeadControlFlag >> 1 & 0x3;
+//
+//
+//        fixHeadLeftLength = lenEncoder(inputStream, null);
+//
+//
+//        packetIdentifierFlag = false;
+//        if (fixHeadControlType >= 3 && fixHeadControlType <= 11){
+//            if (fixHeadControlType == 3){
+//                //检查qos
+//                if (qos > 0){
+//                    //存在标识符
+//                    packetIdentifierFlag = true;
+//                }
+//            }else{
+//                //存在标识符
+//                packetIdentifierFlag = true;
+//            }
+//
+//        }
+//
+//
+//        if (debug){
+//            logger.debug("剩余报文长度 : " + fixHeadLeftLength);
+//        }
+//
+//        if (packetIdentifierFlag){
+//            packetIdentifier = packetIdentifierEncode(inputStream);
+//            fixHeadLeftLength -= 2;
+//            if (debug){
+//                logger.debug("唯一标识符：" + packetIdentifier);
+//            }
+//        }else{
+//            if (debug){
+//                logger.debug("唯一标识符：不需要");
+//            }
+//        }
+//
+//
+//        if (debug){
+//            logger.debug("剩余报文长度 : " + fixHeadLeftLength);
+//        }
+//
+//
+//        if (fixHeadControlType == CONNECT){
+//
+//            getProtocolName(inputStream);
+//
+////            //接下来4个字节为mqtt
+////            if (mqttCharEncoder(inputStream) != true){
+////                throw new IOException("CONNECT MQTT character 不匹配");
+////            }
+//
+//
+//            //level
+//            level = getByte(inputStream);
+//
+//            if (level != 4 && level != 3){
+//                throw new IOException("当前仅支持 3.1.1 版本协议");
+//                //还需要返回一个不支持的版本的报文 MQTT-3。1。1-CN page 21
+//                // ToDo : mqtt 版本错误的应答  未实现
+//            }
+//
+//            connectFlag = getByte(inputStream);
+//
+//            if (new Integer(connectFlag & 0x1) != 0){
+//                //ToDo: mqtt 这个字段最后一位 不为0 直接关闭连接
+//            }
+//
+//            if(new Integer(connectFlag & 0x80) == 0x80){
+//                //用户名标志
+//                //有效载荷包含 用户名
+//            }else{
+//                //有效载荷不包含用户名
+//            }
+//
+//            if (new Integer(connectFlag & 0x40) == 0x40){
+//                //密码标志
+//                //有效载荷包含 密码
+//            }else{
+//                //有效载荷不包含 密码
+//            }
+//
+//
+//            //ToDo: 还有其他位 没有实现   P23
+//
+//
+//
+//            keepAlive = getKeepAlive(inputStream);
+//
+//            if (debug){
+//                logger.debug("keep-alive = "+keepAlive + " 秒");
+//            }
+//
+//
+//            fixHeadLeftLength -= 6+protocolName.length(); // connect 报文的 可变长度位 10
+//
+//        }
+//
+//
+//        int n = 0;
+//        try {
+//
+//            while (n < fixHeadLeftLength) {
+//                bite = inputStream.read();
+//                checkClosure(bite);
+//                buffer[n++] = (byte) bite;
+//            }
+//
+//            byte[] payload = copyToSizedArray(buffer, n);
+//
+//            if (debug){
+//                logger.debug("payload = "+ new String(payload));
+//            }
+//
+//            return payload;
+//        }
+//        catch (IOException e) {
+//            publishEvent(e, buffer, n);
+//            throw e;
+//        }
+//        catch (RuntimeException e) {
+//            publishEvent(e, buffer, n);
+//            throw e;
+//        }
     }
 
 
