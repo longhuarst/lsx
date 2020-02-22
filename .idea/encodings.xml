@@ -2,12 +2,11 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component-mqtt-broker/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component-mqtt/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-eureka/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-eureka/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-dashboard/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-file/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-order/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/src/main/java" charset="UTF-8" />
