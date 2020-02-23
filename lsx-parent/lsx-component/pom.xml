@@ -17,6 +17,7 @@
     <modules>
         <module>lsx-component-mqtt</module>
         <module>lsx-component-mqtt-broker</module>
+        <module>lsx-component-mqtt-broker2</module>
     </modules>
 
 

@@ -1,7 +1,8 @@
 package com.lsx.component.mqttBroker;
 
 
-import com.lsx.component.mqttBroker.netty.NettyServer;
+import com.lsx.component.mqttBroker.mqtt.bootstrap.NettyBootstrapServer;
+//import com.lsx.component.mqttBroker.netty.NettyServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -15,8 +16,10 @@ public class MqttBrokerApplication {
         SpringApplication.run(MqttBrokerApplication.class, args);
 
         //启动netty 服务
-        NettyServer nettyServer = new NettyServer();
-        nettyServer.start(new InetSocketAddress(19000));
+//        NettyServer nettyServer = new NettyServer();
+//        nettyServer.start(new InetSocketAddress(19000));
+//        NettyBootstrapServer nettyBootstrapServer = new NettyBootstrapServer();
+//        nettyBootstrapServer.start();
     }
 
 }

@@ -56,9 +56,9 @@ public class MqttApplication {
 
 
         MqttPahoMessageDrivenChannelAdapter adapter = new MqttPahoMessageDrivenChannelAdapter(
-                "tcp://localhost:1883",
+                "tcp://localhost:19000",
                 "testClient",
-                "topic1",
+                "123",
                 "topic2");
 
         adapter.setCompletionTimeout(5000);
@@ -85,44 +85,44 @@ public class MqttApplication {
 
 
 
-
-
-    //tcp 相关
-    @Bean
-    public TcpNioServerConnectionFactory tcpNioServerConnectionFactory(){
-        TcpNioServerConnectionFactory tcpNioServerConnectionFactory =  new TcpNioServerConnectionFactory(19000);
-
-        tcpNioServerConnectionFactory.setSerializer(new MqttSuperSerializer());
-        tcpNioServerConnectionFactory.setDeserializer(new MqttSuperSerializer());
-        tcpNioServerConnectionFactory.setSingleUse(true);
-
-
-//        ByteArrayStxEtxSerializer
-
-
-
-        return tcpNioServerConnectionFactory;
-    }
-
-
-
-
-    @Bean
-    public TcpReceivingChannelAdapter tcpReceivingChannelAdapter(TcpNioServerConnectionFactory tcpNioServerConnectionFactory){
-        TcpReceivingChannelAdapter receivingChannelAdapter = new TcpReceivingChannelAdapter();
-        receivingChannelAdapter.setConnectionFactory(tcpNioServerConnectionFactory);
-        receivingChannelAdapter.setOutputChannelName("tcp");
-        return receivingChannelAdapter;
-    }
-
-    @ServiceActivator(inputChannel = "tcp")
-    public void messageHandler(Message<?> message){
-        byte[] bytes = (byte[]) message.getPayload();
-        System.out.println(new String(bytes));
-        //这里处理 mqtt 协议
-//        MqttProtocolResolver.resovler();
-    }
-
+//
+//
+//    //tcp 相关
+//    @Bean
+//    public TcpNioServerConnectionFactory tcpNioServerConnectionFactory(){
+//        TcpNioServerConnectionFactory tcpNioServerConnectionFactory =  new TcpNioServerConnectionFactory(19000);
+//
+//        tcpNioServerConnectionFactory.setSerializer(new MqttSuperSerializer());
+//        tcpNioServerConnectionFactory.setDeserializer(new MqttSuperSerializer());
+//        tcpNioServerConnectionFactory.setSingleUse(true);
+//
+//
+////        ByteArrayStxEtxSerializer
+//
+//
+//
+//        return tcpNioServerConnectionFactory;
+//    }
+//
+//
+//
+//
+//    @Bean
+//    public TcpReceivingChannelAdapter tcpReceivingChannelAdapter(TcpNioServerConnectionFactory tcpNioServerConnectionFactory){
+//        TcpReceivingChannelAdapter receivingChannelAdapter = new TcpReceivingChannelAdapter();
+//        receivingChannelAdapter.setConnectionFactory(tcpNioServerConnectionFactory);
+//        receivingChannelAdapter.setOutputChannelName("tcp");
+//        return receivingChannelAdapter;
+//    }
+//
+//    @ServiceActivator(inputChannel = "tcp")
+//    public void messageHandler(Message<?> message){
+//        byte[] bytes = (byte[]) message.getPayload();
+//        System.out.println(new String(bytes));
+//        //这里处理 mqtt 协议
+////        MqttProtocolResolver.resovler();
+//    }
+//
 
 
 

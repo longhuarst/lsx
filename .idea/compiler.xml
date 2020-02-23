@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="lsx-service-order" />
+        <module name="lsx-service-test" />
         <module name="lsx-service-user" />
+        <module name="lsx-component-mqtt-broker2" />
         <module name="lsx-eureka" />
         <module name="lsx-user-oauth" />
         <module name="lsx-component-mqtt-broker" />
+        <module name="lsx-common-db" />
         <module name="gateway-user" />
         <module name="lsx-common" />
         <module name="lsx-service-dashboard" />
@@ -18,8 +20,7 @@
         <module name="lsx-gateway-web" />
         <module name="lsx-service-file" />
         <module name="lsx-component-mqtt" />
-        <module name="lsx-common-db" />
-        <module name="lsx-service-test" />
+        <module name="lsx-service-order" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -29,6 +30,7 @@
       <module name="lsx-component" target="1.8" />
       <module name="lsx-component-mqtt" target="1.8" />
       <module name="lsx-component-mqtt-broker" target="1.8" />
+      <module name="lsx-component-mqtt-broker2" target="1.8" />
       <module name="lsx-eureka" target="1.8" />
       <module name="lsx-gateway" target="1.8" />
       <module name="lsx-gateway-web" target="1.8" />
@@ -51,6 +53,7 @@
       <module name="lsx-component" options="-parameters" />
       <module name="lsx-component-mqtt" options="-parameters" />
       <module name="lsx-component-mqtt-broker" options="-parameters" />
+      <module name="lsx-component-mqtt-broker2" options="-parameters" />
       <module name="lsx-eureka" options="-parameters" />
       <module name="lsx-gateway" options="-parameters" />
       <module name="lsx-gateway-web" options="-parameters" />
