@@ -16,6 +16,7 @@
         <module name="lsx-common" />
         <module name="lsx-service-dashboard" />
         <module name="lsx-service-order" />
+        <module name="lsx-service-device" />
         <module name="lsx-service-user-api" />
         <module name="lsx-gateway-web" />
         <module name="lsx-demo-zookeeper" />
@@ -41,6 +42,7 @@
       <module name="lsx-service" target="1.8" />
       <module name="lsx-service-api" target="1.8" />
       <module name="lsx-service-dashboard" target="1.8" />
+      <module name="lsx-service-device" target="1.8" />
       <module name="lsx-service-file" target="1.8" />
       <module name="lsx-service-order" target="1.8" />
       <module name="lsx-service-test" target="1.8" />
@@ -65,6 +67,7 @@
       <module name="lsx-parent" options="-parameters" />
       <module name="lsx-service-api" options="-parameters" />
       <module name="lsx-service-dashboard" options="-parameters" />
+      <module name="lsx-service-device" options="-parameters" />
       <module name="lsx-service-file" options="-parameters" />
       <module name="lsx-service-order" options="-parameters" />
       <module name="lsx-service-test" options="-parameters" />

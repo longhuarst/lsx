@@ -17,6 +17,7 @@
         <module>lsx-service-file</module>
         <module>lsx-service-dashboard</module>
         <module>lsx-service-order</module>
+        <module>lsx-service-device</module>
     </modules>
 
 
