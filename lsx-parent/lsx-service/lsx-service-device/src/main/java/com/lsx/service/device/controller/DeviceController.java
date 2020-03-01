@@ -5,6 +5,8 @@ import com.lsx.service.device.bean.Device;
 import com.lsx.service.device.respository.DeviceRespository;
 import entity.Result;
 import entity.StatusCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/device")
 public class DeviceController {
+
+
+    Logger logger = LoggerFactory.getLogger(DeviceController.class);
 
 
     @Resource
@@ -85,6 +90,10 @@ public class DeviceController {
 
     @RequestMapping("deleteDeviceByUuid")
     Result deleteDeviceByUuid(String uuid){
+
+
+        logger.info("正在删除 uuid = "+uuid+" 的设备");
+
         try{
             deviceRespository.deleteByUuid(uuid);
         }catch (Exception e){
