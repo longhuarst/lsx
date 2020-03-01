@@ -18,6 +18,7 @@
         <module>lsx-service-dashboard</module>
         <module>lsx-service-order</module>
         <module>lsx-service-device</module>
+        <module>lsx-service-chat</module>
     </modules>
 
 
