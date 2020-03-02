@@ -39,3 +39,6 @@ ribbon:
 feign:
   hystrix:
     enabled: true
+
+
+

@@ -1,6 +1,8 @@
 package com.lsx.web.filter;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -25,6 +27,10 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
     //令牌的名字
     private static final String AUTHORIZE_TOKEN = "Authorization";
 
+
+    static Logger logger = LoggerFactory.getLogger(AuthorizeFilter.class);
+    static boolean debug = logger.isDebugEnabled();
+
     /*
     * 全局拦截
     * */
@@ -35,7 +41,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
 
 
-
+        System.out.println("path: = " + request.getPath());
 
 
         //获取用户令牌信息，
@@ -104,6 +110,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
 
 
+        logger.info("放行");
 
 
         //放行
