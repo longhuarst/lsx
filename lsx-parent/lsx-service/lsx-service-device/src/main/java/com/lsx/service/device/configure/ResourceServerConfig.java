@@ -1,6 +1,8 @@
 package com.lsx.service.device.configure;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,11 @@ import java.util.stream.Collectors;
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 
+
+    static Logger logger = LoggerFactory.getLogger(ResourceServerConfig.class);
+    static boolean debug = logger.isDebugEnabled();
+
+
     //公钥
     private static final String PUBLIC_KEY = "public.key";
 
@@ -47,6 +54,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
      * */
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter(){
+
+        logger.info("jwtAccessTokenConverter()");
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         String publicKey = getPublicKey();
         jwtAccessTokenConverter.setVerifierKey(publicKey);

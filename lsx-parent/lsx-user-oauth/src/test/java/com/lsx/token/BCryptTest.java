@@ -13,5 +13,11 @@ public class BCryptTest {
 
         System.out.println(new BCryptPasswordEncoder().encode("longhua").toString());
 
+
+        System.out.println(new BCryptPasswordEncoder().encode("testpasswordx").toString());
+
+
+
+
     }
 }

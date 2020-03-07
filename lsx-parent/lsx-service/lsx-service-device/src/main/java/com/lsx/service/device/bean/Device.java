@@ -1,6 +1,7 @@
 package com.lsx.service.device.bean;
 
 
+import com.lsx.service.device.util.AuthToken;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -42,6 +43,9 @@ public class Device implements Serializable {
     //设备类型
     @Column(name = "type", nullable = false)
     String type;
+
+    @Column(name = "token", nullable = false, columnDefinition = "blob")
+    AuthToken token;
 
 
     public Integer getId() {
@@ -98,5 +102,14 @@ public class Device implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+
+    public AuthToken getToken() {
+        return token;
+    }
+
+    public void setToken(AuthToken token) {
+        this.token = token;
     }
 }

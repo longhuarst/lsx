@@ -3,6 +3,8 @@ package com.lsx.service.device.controller;
 
 import com.lsx.service.device.bean.Device;
 import com.lsx.service.device.respository.DeviceRespository;
+import com.lsx.service.device.service.DeviceService;
+import com.lsx.service.device.util.AuthToken;
 import entity.Result;
 import entity.StatusCode;
 import org.slf4j.Logger;
@@ -27,6 +29,9 @@ public class DeviceController {
     DeviceRespository deviceRespository;
 
 
+    @Resource
+    private DeviceService deviceService;
+
 
     //创建设备
     // 创建设备后，应该给设备赋予一个token device权限的token ，用于设备鉴权
@@ -44,9 +49,10 @@ public class DeviceController {
         if (info == null)
             return new Result(false, StatusCode.ERROR, "空的信息");
 
+        String uuid = UUID.randomUUID().toString();
         Device device = new Device();
         device.setUsername(username);
-        device.setUuid(UUID.randomUUID().toString());
+        device.setUuid(uuid);
         device.setName(name);
 
         if (info != null)
@@ -57,6 +63,21 @@ public class DeviceController {
 
         Device retDevice;
 
+
+        AuthToken authToken = null;
+
+        //授权 发布token
+        try {
+            authToken = deviceService.getToken(uuid);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, StatusCode.ERROR, "创建失败，需要联系管理员");
+        }
+
+        device.setToken(authToken);
+
+
+
         try {
             retDevice = deviceRespository.save(device);
         }catch (Exception e){
@@ -65,11 +86,23 @@ public class DeviceController {
         }
 
 
+
+
+
         return new Result(true, StatusCode.OK, "创建成功", retDevice);
 
     }
 
 
+
+
+    @RequestMapping("/refreshDeviceToken")
+    Result refreshDeviceToken(String uuid){
+
+        //重新获取令牌
+
+        return new Result(false, StatusCode.OK, "成功");
+    }
 
 
     @RequestMapping("/findDeviceByUsername")
