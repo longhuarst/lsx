@@ -19,8 +19,15 @@ public class Test {
     }
 
 
+    @RequestMapping("/test/role/role_user")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public String TestRoleRoleUser(){
+        return "你拥有 USER 的权限";
+    }
+
+
     @RequestMapping("/test/role/user")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('user')")
     public String TestRoleUser(){
         return "你拥有 USER 的权限";
     }

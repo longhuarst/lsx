@@ -15,6 +15,19 @@ spring:
 #            - DELETE
       #配置路由
       routes:
+      - id: lsx_service_file_route
+        uri: lb://lsx-service-file
+        predicates:
+          - Path=/file/**
+        filters:
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      - id: lsx_fastdfs_route
+        uri: http://10.211.55.10:8080
+        predicates:
+          - Path=/fastdfs/**
+        filters:
+          - StripPrefix=1
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       #唯一标识符
       - id: lsx_eureka_route
         #用户请求需要路由到该服务【指定要路由的服务】
@@ -50,8 +63,8 @@ spring:
         uri: lb://lsx-service-user
         predicates:
           - Path=/user/**
-#        filters:
-#          - StripPrefix=1
+        filters:
+          - StripPrefix=1
 #          #增加前缀
 #          - PrefixPath=/user
       - id: lsx_user_oauth_route

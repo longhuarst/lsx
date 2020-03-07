@@ -32,6 +32,11 @@ eureka:
 
 debug: true
 
+
+logging:
+  level:
+    root: debug
+
 ribbon:
   eureka:
     enabled: true

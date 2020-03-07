@@ -10,6 +10,9 @@ import entity.StatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -145,9 +148,16 @@ public class DeviceController {
 
 
 
+
+    //只有持有device 权限的消息才能 上传
     @RequestMapping("upload")
+    @PreAuthorize("hasAuthority('device')")
     Result upload(String uuid, String topic, String msg){
 
+
+        //获取设备身份信息
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        authentication.getPrincipal();
 
 
         //从redis

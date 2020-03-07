@@ -17,12 +17,9 @@ import com.lsx.file.file.FastDFSFile;
 import org.csource.common.MyException;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class FastDFSUtil {
 
@@ -97,10 +94,11 @@ public class FastDFSUtil {
     /*
     * 文件下载
     * */
-    public static InputStream download(String group, String name) throws Exception {
+    public static byte[] download(String group, String name) throws Exception {
         StorageClient storageClient = getStorageClient();
         byte[] buffer = storageClient.download_file(group, name);
-        return new ByteArrayInputStream(buffer);
+//        return new ByteArrayInputStream(buffer);
+        return buffer;
     }
 
 

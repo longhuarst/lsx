@@ -64,6 +64,10 @@ public class User implements Serializable {
     @CreatedDate
     Date register_time;
 
+    //头像
+    @Column(name = "profile_pic_url")
+    String profile_pic_url;
+
     public Integer getId() {
         return id;
     }
@@ -176,6 +180,16 @@ public class User implements Serializable {
         this.register_time = register_time;
     }
 
+
+    public String getProfile_pic_url() {
+        return profile_pic_url;
+    }
+
+    public void setProfile_pic_url(String profile_pic_url) {
+        this.profile_pic_url = profile_pic_url;
+    }
+
+
     @Override
     public String toString() {
         return "User{" +
@@ -193,6 +207,7 @@ public class User implements Serializable {
                 ", role='" + role + '\'' +
                 ", status='" + status + '\'' +
                 ", register_time=" + register_time +
+                ", profile_pic_url='" + profile_pic_url + '\'' +
                 '}';
     }
 }

@@ -45,7 +45,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
         String path = request.getPath().toString();
 
-        if (path.equals("/oauth/user/login") || path.equals("/device/upload")){
+        if (path.equals("/oauth/user/login") || path.equals("/device/upload") || path.startsWith("/fastdfs")){
             //登陆放行
 
             logger.info("登陆 放行");

@@ -112,7 +112,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         //所有请求都必须通过认证
         http.authorizeRequests()
                 //这些放行
-                .antMatchers("/test").permitAll()
+//                .antMatchers("/test").permitAll()
 //                .antMatchers("/findByUsername/{username}")
                 .anyRequest().authenticated();//其他都要认证才能访问
 

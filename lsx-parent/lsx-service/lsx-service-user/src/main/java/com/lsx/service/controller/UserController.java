@@ -8,9 +8,16 @@ import entity.BCrypt;
 import entity.JwtUtil;
 import entity.Result;
 import entity.StatusCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
@@ -24,6 +31,8 @@ public class UserController {
     @Autowired
     UserRespository userRespository;
 
+
+    static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
     /*
@@ -76,7 +85,9 @@ public class UserController {
         User user = new User();
 
         //暂时不使用加密
-        user.setPassword(password);
+        //使用加密
+//        System.out.println();
+        user.setPassword(new BCryptPasswordEncoder().encode(password).toString());
         user.setUsername(username);
 
         String uuid = UUID.randomUUID().toString();
@@ -98,6 +109,71 @@ public class UserController {
 
     }
 
+
+
+    //创建管理员账户
+    @RequestMapping(value = "/createAdmin")
+//    @RolesAllowed(value = "admin")
+//    @PreAuthorize("ROLE_USER")
+    @PreAuthorize("hasAuthority('admin')")
+    public Result createAdmin(String username, String password){
+        User user = new User();
+
+        //暂时不使用加密
+        //使用加密
+//        System.out.println();
+        user.setPassword(new BCryptPasswordEncoder().encode(password).toString());
+        user.setUsername(username);
+
+        String uuid = UUID.randomUUID().toString();
+
+        user.setUuid(uuid);
+
+        user.setRole("admin");
+
+
+        User resUser = null;
+        try{
+            resUser = userRespository.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, StatusCode.ERROR, "注册失败");
+        }
+
+        return new Result(true, StatusCode.OK, "注册成功", resUser);
+
+    }
+
+
+
+    //更新头像
+    @RequestMapping("/updateProfilePicUrl")
+    @PreAuthorize("hasAuthority('user')")
+    public Result updateProfilePicUrl(String username, String url){
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String principal = authentication.getPrincipal().toString();
+        logger.info("principal = "+principal);
+
+
+        logger.info("username = "+username + " 更新头像");
+
+        //检查用户名和 token中的用户名是否一致
+        if (!username.equals(principal)){
+            return new Result(false, StatusCode.ERROR, "token dismatched!");
+        }
+
+        User user = userRespository.findByUsername(username);
+        String oldUrl = user.getProfile_pic_url();
+        //删除旧头像
+        //FixMe  暂时不删除
+        user.setProfile_pic_url(url);
+
+        User newUser = userRespository.save(user);
+
+        return new Result(true, StatusCode.OK, "更新成功", newUser);
+    }
 
 
 

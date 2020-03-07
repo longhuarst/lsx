@@ -7,9 +7,13 @@ import com.lsx.file.util.FastDFSUtil;
 import entity.Result;
 import entity.StatusCode;
 import org.csource.fastdfs.FileInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/file")
@@ -22,6 +26,8 @@ public class FileUploadContller {
         return "test";
     }
 
+
+    static Logger logger = LoggerFactory.getLogger(FileUploadContller.class);
 
 
 
@@ -52,6 +58,14 @@ public class FileUploadContller {
 
     }
 
+    /*
+    * 文件下载
+    * */
+    @RequestMapping("download")
+    public byte[] download(String group, String name) throws Exception {
+        logger.info("downlload");
+        return FastDFSUtil.download(group,name);
+    }
 
 
     /*
