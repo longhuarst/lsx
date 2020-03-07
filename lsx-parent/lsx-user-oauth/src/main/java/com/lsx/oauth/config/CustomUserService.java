@@ -99,8 +99,13 @@ public class CustomUserService implements UserDetailsService {
 
         System.out.println("userFeign 查询完毕");
 
+
+
         if (user == null){
+            System.out.println("用户不存在");
             throw new UsernameNotFoundException("用户不存在");
+        }else{
+            System.out.println(user.toString());
         }
 
 

@@ -4,15 +4,15 @@ spring:
   #配置跨域
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]': #匹配所有请求
-            allowedOrigins: "*" #跨域处理 允许所有的域
-            allowedMethods: #支持的方法
-            - GET
-            - POST
-            - PUT
-            - DELETE
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]': #匹配所有请求
+#            allowedOrigins: "*" #跨域处理 允许所有的域
+#            allowedMethods: #支持的方法
+#            - GET
+#            - POST
+#            - PUT
+#            - DELETE
       #配置路由
       routes:
       #唯一标识符
@@ -50,14 +50,52 @@ spring:
         uri: lb://lsx-service-user
         predicates:
           - Path=/user/**
-        filters:
-          - StripPrefix=1
+#        filters:
+#          - StripPrefix=1
+#          #增加前缀
+#          - PrefixPath=/user
       - id: lsx_user_oauth_route
         uri: lb://lsx-user-oauth
         predicates:
           - Path=/oauth/**
         filters:
           - StripPrefix=1
+          #去除 重复的 cors 跨域字段
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      - id: lsx_service_device_route
+        uri: lb://lsx-service-device
+        predicates:
+          - Path=/device/**
+        filters:
+          #去除 重复的 cors 跨域字段
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            # 允许携带认证信息
+            # 允许跨域的源(网站域名/ip)，设置*为全部
+            # 允许跨域请求里的head字段，设置*为全部
+            # 允许跨域的method， 默认为GET和OPTIONS，设置*为全部
+            # 跨域允许的有效期
+            allow-credentials: true
+            allowed-origins: "*"
+#              - "http://localhost:13009"
+#              - "http://localhost:13010"
+            allowed-headers: "*"
+            allowed-methods: "*"
+#              - OPTIONS
+#              - GET
+#              - POST
+            max-age: 3600
+            # 允许response的head信息
+            # 默认仅允许如下6个：
+            #     Cache-Control
+            #     Content-Language
+            #     Content-Type
+            #     Expires
+            #     Last-Modified
+            #     Pragma
+            #exposed-headers:
   redis:
     host: localhost
     port: 16379
@@ -68,6 +106,10 @@ spring:
         max-idle: 20
         min-idle: 0
     timeout: 3000
+
+
+
+
 
 #
 #spring:
@@ -113,5 +155,7 @@ eureka:
 
 
 debug: true
+
+
 
 

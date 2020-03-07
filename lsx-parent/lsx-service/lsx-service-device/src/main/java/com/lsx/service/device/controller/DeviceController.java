@@ -27,6 +27,9 @@ public class DeviceController {
     DeviceRespository deviceRespository;
 
 
+
+    //创建设备
+    // 创建设备后，应该给设备赋予一个token device权限的token ，用于设备鉴权
     @RequestMapping("/createDevice")
     Result createDevice(String username, String type, String name, String info){
         if (username == null)
@@ -92,6 +95,9 @@ public class DeviceController {
     Result deleteDeviceByUuid(String uuid){
 
 
+
+
+
         logger.info("正在删除 uuid = "+uuid+" 的设备");
 
         try{
@@ -104,6 +110,20 @@ public class DeviceController {
         return new Result(false, StatusCode.OK, "成功");
     }
 
+
+
+    @RequestMapping("upload")
+    Result upload(String uuid, String topic, String msg){
+
+
+
+        //从redis
+
+        logger.info("uuid = "+uuid + ";topic = "+topic + ";msg = "+msg);
+
+
+        return new Result(false, StatusCode.OK, "success");
+    }
 
 
 

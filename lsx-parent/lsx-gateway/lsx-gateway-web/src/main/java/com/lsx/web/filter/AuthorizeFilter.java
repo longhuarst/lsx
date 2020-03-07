@@ -43,6 +43,16 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
 
         System.out.println("path: = " + request.getPath());
 
+        String path = request.getPath().toString();
+
+        if (path.equals("/oauth/user/login") || path.equals("/device/upload")){
+            //登陆放行
+
+            logger.info("登陆 放行");
+            return chain.filter(exchange);
+        }
+
+
 
         //获取用户令牌信息，
         // 1. 头文件中
