@@ -1,0 +1,34 @@
+server:
+  port: 18889
+  ssl:
+    key-store: lsx.jks
+    key-alias: lsx
+    key-store-password: lsxlsx
+
+spring:
+  application:
+    name: lsx-service-https
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/lsx-web?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: QWER1234
+    ### 数据源类别
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: localhost
+    port: 16379
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+    show-sql: true
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:18881/eureka

@@ -19,6 +19,7 @@
         <module>lsx-service-order</module>
         <module>lsx-service-device</module>
         <module>lsx-service-chat</module>
+        <module>lsx-service-https</module>
     </modules>
 
 

@@ -141,6 +141,10 @@ spring:
 server:
   port: 18880
   #端口
+#  ssl:
+#    key-store: public.key
+#    key-alias: lsx
+#    key-store-password: lsxlsx
 
 
 management:

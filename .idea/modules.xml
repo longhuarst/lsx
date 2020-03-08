@@ -22,6 +22,7 @@
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-dashboard/lsx-service-dashboard.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-dashboard/lsx-service-dashboard.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-device/lsx-service-device.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-device/lsx-service-device.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-file/lsx-service-file.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-file/lsx-service-file.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-https/lsx-service-https.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-https/lsx-service-https.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-order/lsx-service-order.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-order/lsx-service-order.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-test/lsx-service-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" />
