@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: lsx-admin
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 841105197@qq.com
+    password: null #授权吗
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+        debug: true
+  boot:
+    admin:
+      notify:
+        mail:
+          from: 841105197@qq.com
+          to: 841105197@qq.com
+          cc: 841105197@qq.com
+          ignore-changes:
+
+server:
+  port: 18892

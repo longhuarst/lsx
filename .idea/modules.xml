@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/lsx-gateway/gateway-user/gateway-user.iml" filepath="$PROJECT_DIR$/lsx-gateway/gateway-user/gateway-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/lsx.iml" filepath="$PROJECT_DIR$/.idea/lsx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-admin/lsx-admin.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-admin/lsx-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-common/lsx-common.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-common/lsx-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-common-db/lsx-common-db.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-common-db/lsx-common-db.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-component/lsx-component.iml" />
@@ -17,6 +18,7 @@
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-parent.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-admin-client/lsx-service-admin-client.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-admin-client/lsx-service-admin-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-aop/lsx-service-aop.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-aop/lsx-service-aop.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-chat/lsx-service-chat.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-chat/lsx-service-chat.iml" />

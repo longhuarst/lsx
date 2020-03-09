@@ -22,6 +22,7 @@
         <module>lsx-service-https</module>
         <module>lsx-service-error</module>
         <module>lsx-service-aop</module>
+        <module>lsx-service-admin-client</module>
     </modules>
 
 
@@ -78,6 +79,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+
+
+        <!-- client admin -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+
+
 
 
     </dependencies>

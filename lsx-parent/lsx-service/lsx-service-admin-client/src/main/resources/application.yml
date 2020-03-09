@@ -1,6 +1,10 @@
+server:
+  port: 18893
+
+
 spring:
   application:
-    name: lsx-service-user
+    name: lsx-service-admin-client
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:13306/lsx-web?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
@@ -24,9 +28,6 @@ spring:
 
 
 
-server:
-  port: 18883
-
 
 eureka:
   instance:
@@ -34,25 +35,3 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:18881/eureka
-
-debug: true
-
-
-logging:
-  level:
-    root: debug
-
-ribbon:
-  eureka:
-    enabled: true
-
-feign:
-  hystrix:
-    enabled: true
-
-
-
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-
-

@@ -1,5 +1,6 @@
 package com.lsx.service;
 
+//import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableEurekaClient
 @EnableJpaAuditing
 @MapperScan("com.lsx.service.mapper")
+//@EnableAdminServer
 public class UserServiceApplication {
 
     public static void main(String[] args) {
