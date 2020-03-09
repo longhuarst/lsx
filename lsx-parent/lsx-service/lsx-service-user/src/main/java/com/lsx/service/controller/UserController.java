@@ -4,6 +4,7 @@ import com.alibaba.druid.support.spring.stat.annotation.Stat;
 import com.alibaba.fastjson.JSON;
 import com.lsx.service.dao.UserRespository;
 import com.lsx.service.entity.User;
+import com.lsx.service.service.UserService;
 import entity.BCrypt;
 import entity.JwtUtil;
 import entity.Result;
@@ -209,4 +210,21 @@ public class UserController {
 
 
 
+
+    @Autowired
+    UserService userService;
+
+
+
+    //mybatis
+    @RequestMapping("FindByUsernameMapper")
+    public Result<User> findByUsernameMapper(String username){
+        User user = userService.findByUsername(username);
+        if (user == null){
+            return new Result<>(false, StatusCode.ERROR, "无");
+
+        }
+
+        return new Result<>(true, StatusCode.OK, "成功", user);
+    }
 }
