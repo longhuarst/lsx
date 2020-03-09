@@ -17,10 +17,12 @@
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-gateway/lsx-gateway-web/lsx-gateway-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-parent.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-aop/lsx-service-aop.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-aop/lsx-service-aop.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-chat/lsx-service-chat.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-chat/lsx-service-chat.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-dashboard/lsx-service-dashboard.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-dashboard/lsx-service-dashboard.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-device/lsx-service-device.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-device/lsx-service-device.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-error/lsx-service-error.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-error/lsx-service-error.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-file/lsx-service-file.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-file/lsx-service-file.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-https/lsx-service-https.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-https/lsx-service-https.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-order/lsx-service-order.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-order/lsx-service-order.iml" />

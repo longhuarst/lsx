@@ -146,9 +146,26 @@ public class UserController {
 
 
 
+
+
+    //获取头像连接
+    @RequestMapping("/getProfilePicUrlByUsername")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
+    public Result getProfilePicUrlByUsername(String username){
+        User user = userRespository.findByUsername(username);
+
+        if (user != null){
+            return new Result(true, StatusCode.OK, "成功", user.getProfile_pic_url());
+        }
+
+        return new Result(false, StatusCode.ERROR, "失败");
+
+    }
+
+
     //更新头像
     @RequestMapping("/updateProfilePicUrl")
-    @PreAuthorize("hasAuthority('user')")
+    @PreAuthorize("hasAnyAuthority('user', 'admin')")
     public Result updateProfilePicUrl(String username, String url){
 
 

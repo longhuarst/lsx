@@ -20,6 +20,8 @@
         <module>lsx-service-device</module>
         <module>lsx-service-chat</module>
         <module>lsx-service-https</module>
+        <module>lsx-service-error</module>
+        <module>lsx-service-aop</module>
     </modules>
 
 

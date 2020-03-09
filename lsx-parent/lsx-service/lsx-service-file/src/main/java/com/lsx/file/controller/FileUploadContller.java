@@ -50,8 +50,9 @@ public class FileUploadContller {
 
 
         //拼接 url 地址
-        String url = FastDFSUtil.getTrackerInfo() + "/" + storage[0] + "/" + storage[1];
-
+        String url[] = new String[2];
+        url[0] = FastDFSUtil.getTrackerInfo() + "/" + storage[0] + "/" + storage[1];
+        url[1] = "/" + storage[0] + "/" + storage[1];
 
 
         return new Result(true, StatusCode.OK, "上传成功",url);
