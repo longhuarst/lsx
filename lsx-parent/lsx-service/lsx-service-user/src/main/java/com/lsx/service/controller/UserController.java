@@ -217,7 +217,7 @@ public class UserController {
 
 
     //mybatis
-    @RequestMapping("FindByUsernameMapper")
+    @RequestMapping("findByUsernameMapper")
     public Result<User> findByUsernameMapper(String username){
         User user = userService.findByUsername(username);
         if (user == null){
