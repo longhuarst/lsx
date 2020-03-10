@@ -23,6 +23,7 @@
         <module>lsx-service-error</module>
         <module>lsx-service-aop</module>
         <module>lsx-service-admin-client</module>
+        <module>lsx-service-todolist</module>
     </modules>
 
 

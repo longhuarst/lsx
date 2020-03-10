@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: lsx-service-todolist
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:13306/lsx-web?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: QWER1234
+    ### 数据源类别
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    host: localhost
+    port: 16379
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+    show-sql: true
+  boot:
+    admin:
+      client:
+        url: http://localhost:18892
+
+
+
+server:
+  port: 18894
+
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:18881/eureka
+
+#debug: true
+
+
+#logging:
+#  level:
+#    root: debug
+
+ribbon:
+  eureka:
+    enabled: true
+
+feign:
+  hystrix:
+    enabled: true
+
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
