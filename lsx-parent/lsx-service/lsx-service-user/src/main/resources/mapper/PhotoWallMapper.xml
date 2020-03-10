@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsx.service.mapper.PhotoWallMapper">
+
+    <select id="updatePhotoWall" parameterType="String">
+        insert into photo_wall(username, photo_list) VALUES(#{username}, #{photoList}) on DUPLICATE key update photo_list=#{photoList}
+    </select>
+
+
+    <select id="findByUsername" parameterType="String" resultType="String">
+        select photo_list from photo_wall where username = #{username}
+    </select>
+
+</mapper>
