@@ -4,11 +4,13 @@ package com.lsx.service.device.controller;
 import com.lsx.service.device.bean.Device;
 import com.lsx.service.device.respository.DeviceRespository;
 import com.lsx.service.device.service.DeviceService;
+import com.lsx.service.device.service.TokenService;
 import com.lsx.service.device.util.AuthToken;
 import entity.Result;
 import entity.StatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +37,10 @@ public class DeviceController {
 
     @Resource
     private DeviceService deviceService;
+
+
+    @Autowired
+    private TokenService tokenService;//用于获取授权服务
 
 
     //创建设备
@@ -67,15 +74,29 @@ public class DeviceController {
         Device retDevice;
 
 
-        AuthToken authToken = null;
+        //生成令牌
+        //令牌有效期 1 年
+        long time = new Date().getTime() / 1000 + 365*24*3600;
+        String token = tokenService.getToken(username, uuid, time);
+
+
+
+
+
+
+        AuthToken authToken = new AuthToken();
+
+        authToken.setAccessToken(token);
+        authToken.setRefreshToken(null); //无法刷新令牌
+        authToken.setJti(null); //无jti
 
         //授权 发布token
-        try {
-            authToken = deviceService.getToken(uuid);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result(false, StatusCode.ERROR, "创建失败，需要联系管理员");
-        }
+//        try {
+//            authToken = deviceService.getToken(uuid);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return new Result(false, StatusCode.ERROR, "创建失败，需要联系管理员");
+//        }
 
         device.setToken(authToken);
 

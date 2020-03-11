@@ -17,6 +17,9 @@ public class BCryptTest {
         System.out.println(new BCryptPasswordEncoder().encode("testpasswordx").toString());
 
 
+        System.out.println(new BCryptPasswordEncoder().encode("lsxlsx").toString());
+
+
 
 
     }

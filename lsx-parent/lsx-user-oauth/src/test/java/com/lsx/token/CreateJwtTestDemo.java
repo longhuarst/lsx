@@ -18,12 +18,15 @@ import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 //SpringBootTest 一定要写， 不然Value注解无法获取  不指定classes 会出错，不知原因
@@ -42,7 +45,7 @@ public class CreateJwtTestDemo {
     private String lstest;
 
     @Test
-    public void Test(){
+    public String Test(){
 
         //加载证书 读取类目录下的文件
         ClassPathResource classPathResource = new ClassPathResource("lsx.jks");
@@ -68,6 +71,8 @@ public class CreateJwtTestDemo {
         String token = jwt.getEncoded();
 
         System.out.println(token);
+
+        return token;
     }
 
 
@@ -86,9 +91,9 @@ public class CreateJwtTestDemo {
     * 解析令牌
     * */
     @Test
-    public void TestDecode() {
-        String token = "";
-        String publicKey = "";
+    public void TestDecode(String token) {
+//        String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM4MzkyNDgsInVzZXJfbmFtZSI6ImxvbmdodWEiLCJhdXRob3JpdGllcyI6WyJhZG1pbiJdLCJqdGkiOiI5Y2M3NmM1NC02OTZhLTRlYjctOTkwZi0zNmJjZWJiMWEzZmYiLCJjbGllbnRfaWQiOiJsc3giLCJzY29wZSI6WyJhcHAiLCJhbGwiLCJVU0VSIl19.ilabzc1edAbSk9c83OzezXH0IURKoWh66dt6-ofDYj8M1l-qAVjtF_g4lqnmknKSYY30Aa0ztVEpaNM5H9FWTr5euBwTawt-aVHkbMH3CVRXHmytDd5EBvVqCgjLa-xGj1xm6iCYXzhN8j3HfB1VmS2NPmeYYfIB6KpA3U-EiXBQpFl6TNqmGeBGPyOI0rAPGdO3wW_iws__CK540ezPMwBkVFUp0lLJL8ABnniy_91yWZbVbAmzfc4YCiyR3LwiItweJfSK-PEUnm8_eO8x5y7kHCiCeMEKSxATBCRLXAGDy7uhSGn2DnSJFPgR2HPOV6gDkc2jCL3RiWeShlNQvQ";
+        String publicKey = getPublicKey();
 
         Jwt jwt = JwtHelper.decodeAndVerify(
                 token,
@@ -97,6 +102,22 @@ public class CreateJwtTestDemo {
 
         String claims = jwt.getClaims();
         System.out.println(claims);
+    }
+
+
+    @Test
+    public void testEncoderAndDecoder(){
+
+        String token1 = Test();
+
+        TestDecode(token1);
+
+        String token2 = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODM4MzkyNDgsInVzZXJfbmFtZSI6ImxvbmdodWEiLCJhdXRob3JpdGllcyI6WyJhZG1pbiJdLCJqdGkiOiI5Y2M3NmM1NC02OTZhLTRlYjctOTkwZi0zNmJjZWJiMWEzZmYiLCJjbGllbnRfaWQiOiJsc3giLCJzY29wZSI6WyJhcHAiLCJhbGwiLCJVU0VSIl19.ilabzc1edAbSk9c83OzezXH0IURKoWh66dt6-ofDYj8M1l-qAVjtF_g4lqnmknKSYY30Aa0ztVEpaNM5H9FWTr5euBwTawt-aVHkbMH3CVRXHmytDd5EBvVqCgjLa-xGj1xm6iCYXzhN8j3HfB1VmS2NPmeYYfIB6KpA3U-EiXBQpFl6TNqmGeBGPyOI0rAPGdO3wW_iws__CK540ezPMwBkVFUp0lLJL8ABnniy_91yWZbVbAmzfc4YCiyR3LwiItweJfSK-PEUnm8_eO8x5y7kHCiCeMEKSxATBCRLXAGDy7uhSGn2DnSJFPgR2HPOV6gDkc2jCL3RiWeShlNQvQ";
+
+        TestDecode(token2);
+
+
+
     }
 
 
@@ -113,5 +134,28 @@ public class CreateJwtTestDemo {
         
 
     }
+
+    /*
+     * 获取非对称加密公钥 Key
+     * */
+    private String getPublicKey(){
+        ClassPathResource classPathResource = new ClassPathResource("public.key");
+
+        try {
+            System.out.println(classPathResource.contentLength());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            InputStreamReader inputStreamReader = new InputStreamReader(classPathResource.getInputStream());
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            return bufferedReader.lines().collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
 }
