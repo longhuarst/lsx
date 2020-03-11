@@ -42,4 +42,31 @@ public class ChatController {
     }
 
 
+
+    @RequestMapping("/addFriend")
+    Result addFriend(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+        FriendList friendList = null;
+
+        //获取好友名单
+        try {
+            friendList = friendListRespository.findByUsername(username);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+
+//        friendList.getFrinendList().
+
+
+
+
+
+
+    }
+
+
 }
