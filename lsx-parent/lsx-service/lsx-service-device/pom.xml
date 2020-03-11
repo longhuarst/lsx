@@ -12,4 +12,13 @@
     <artifactId>lsx-service-device</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-websocket</artifactId>
+            <version>5.2.4.RELEASE</version>
+        </dependency>
+    </dependencies>
+
+
 </project>

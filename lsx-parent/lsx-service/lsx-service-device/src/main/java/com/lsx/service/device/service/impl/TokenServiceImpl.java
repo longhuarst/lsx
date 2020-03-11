@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -51,10 +53,14 @@ public class TokenServiceImpl implements TokenService {
 //        payload.put("nikename","tomcat");
 //        payload.put("address","cs");
 //        payload.put("role", "admin,user");
-        payload.put("username", username);
+        payload.put("user_name", uuid);  //指定为uuid  好辨认
         payload.put("uuid",uuid);
-        payload.put("exp", exp);
-        payload.put("authorities","device");//固定的设备权限
+        payload.put("jti", uuid);
+        payload.put("exp", exp); //过期时间
+        List<String> list = new ArrayList<>();
+        list.add("device");
+        payload.put("authorities",list);//固定的设备权限
+        payload.put("role",list);
 
         Jwt jwt = JwtHelper.encode(JSON.toJSONString(payload), new RsaSigner(privateKey));
 

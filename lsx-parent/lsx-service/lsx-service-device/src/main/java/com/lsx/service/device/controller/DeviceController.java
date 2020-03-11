@@ -2,6 +2,8 @@ package com.lsx.service.device.controller;
 
 
 import com.lsx.service.device.bean.Device;
+import com.lsx.service.device.bean.DeviceMessage;
+import com.lsx.service.device.respository.DeviceMessageRespository;
 import com.lsx.service.device.respository.DeviceRespository;
 import com.lsx.service.device.service.DeviceService;
 import com.lsx.service.device.service.TokenService;
@@ -41,6 +43,9 @@ public class DeviceController {
 
     @Autowired
     private TokenService tokenService;//用于获取授权服务
+
+    @Autowired
+    private DeviceMessageRespository deviceMessageRespository;
 
 
     //创建设备
@@ -173,7 +178,19 @@ public class DeviceController {
     //只有持有device 权限的消息才能 上传
     @RequestMapping("upload")
     @PreAuthorize("hasAuthority('device')")
-    Result upload(String uuid, String topic, String msg){
+    Result upload(String topic, String msg){
+
+        //uuid 在 authorization 中
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String principal = authentication.getPrincipal().toString();
+        logger.info("principal = "+principal);
+
+
+        String uuid = principal;
+
+
+        System.out.println(authentication.getDetails().toString());
 
 
         //获取设备身份信息
@@ -184,6 +201,21 @@ public class DeviceController {
         //从redis
 
         logger.info("uuid = "+uuid + ";topic = "+topic + ";msg = "+msg);
+
+        //入数据库
+
+        DeviceMessage deviceMessage = new DeviceMessage();
+        deviceMessage.setTopic(topic);
+        deviceMessage.setMsg(msg);
+        deviceMessage.setUuid(uuid);
+
+        try {
+            deviceMessageRespository.save(deviceMessage);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "failed", e.getMessage());
+        }
+
 
 
         return new Result(false, StatusCode.OK, "success");
