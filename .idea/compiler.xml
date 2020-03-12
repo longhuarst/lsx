@@ -12,13 +12,12 @@
         <module name="lsx-eureka" />
         <module name="lsx-user-oauth" />
         <module name="lsx-service-aop" />
-        <module name="lsx-service-todolist" />
+        <module name="lsx-common-db" />
         <module name="gateway-user" />
-        <module name="lsx-common" />
+        <module name="lsx-service-todolist" />
         <module name="lsx-component-mqtt-broker" />
         <module name="lsx-service-dashboard" />
         <module name="lsx-service-error" />
-        <module name="lsx-service-order" />
         <module name="lsx-service-device" />
         <module name="lsx-service-admin-client" />
         <module name="lsx-service-user-api" />
@@ -27,7 +26,8 @@
         <module name="lsx-demo-zookeeper" />
         <module name="lsx-service-file" />
         <module name="lsx-component-mqtt" />
-        <module name="lsx-common-db" />
+        <module name="lsx-common" />
+        <module name="lsx-service-order" />
         <module name="lsx-service-https" />
         <module name="lsx-service-chat" />
       </profile>
