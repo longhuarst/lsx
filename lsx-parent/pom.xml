@@ -23,8 +23,8 @@
         <module>lsx-user-oauth</module>
         <module>lsx-component</module>
         <module>lsx-demo</module>
-        <module>lsx-service-device</module>
         <module>lsx-admin</module>
+        <module>lsx-test</module>
     </modules>
 
 

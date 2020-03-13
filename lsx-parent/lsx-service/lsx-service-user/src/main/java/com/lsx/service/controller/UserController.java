@@ -9,6 +9,7 @@ import entity.BCrypt;
 import entity.JwtUtil;
 import entity.Result;
 import entity.StatusCode;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,35 @@ public class UserController {
         return new Result(false, StatusCode.LOGINERROR,"账号或者密码错误");
     }
 
+
+    @RequestMapping("/register")
+    Result register(String username, String password, String email, String validCode){
+        User user = new User();
+
+
+
+        //验证email
+
+
+
+
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
+        user.setRole("user");
+        user.setUsername(username);
+        user.setUuid(UUID.randomUUID().toString());
+        user.setMail(email);
+
+        User resUser = null;
+        try{
+            resUser = userRespository.save(user);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, StatusCode.ERROR, "注册失败");
+        }
+
+        return new Result(true, StatusCode.OK, "注册成功", resUser);
+
+    }
 
     @RequestMapping(value = "/addUser")
     public Result addUser(String username, String password){

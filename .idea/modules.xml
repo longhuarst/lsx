@@ -32,6 +32,8 @@
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-todolist/lsx-service-todolist.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-todolist/lsx-service-todolist.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service/lsx-service-user/lsx-service-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-service-api/lsx-service-user-api/lsx-service-user-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-test/lsx-test.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-test/lsx-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-test/lsx-test-tkmybatis/lsx-test-tkmybatis.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-test/lsx-test-tkmybatis/lsx-test-tkmybatis.iml" />
       <module fileurl="file://$PROJECT_DIR$/lsx-parent/lsx-user-oauth/lsx-user-oauth.iml" filepath="$PROJECT_DIR$/lsx-parent/lsx-user-oauth/lsx-user-oauth.iml" />
     </modules>
   </component>

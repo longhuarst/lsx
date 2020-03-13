@@ -18,6 +18,7 @@
         <module name="lsx-component-mqtt-broker" />
         <module name="lsx-service-dashboard" />
         <module name="lsx-service-error" />
+        <module name="lsx-test-tkmybatis" />
         <module name="lsx-service-device" />
         <module name="lsx-service-admin-client" />
         <module name="lsx-service-user-api" />
@@ -62,6 +63,8 @@
       <module name="lsx-service-todolist" target="1.8" />
       <module name="lsx-service-user" target="1.8" />
       <module name="lsx-service-user-api" target="1.8" />
+      <module name="lsx-test" target="1.8" />
+      <module name="lsx-test-tkmybatis" target="1.8" />
       <module name="lsx-user-oauth" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -94,6 +97,8 @@
       <module name="lsx-service-todolist" options="-parameters" />
       <module name="lsx-service-user" options="-parameters" />
       <module name="lsx-service-user-api" options="-parameters" />
+      <module name="lsx-test" options="-parameters" />
+      <module name="lsx-test-tkmybatis" options="-parameters" />
       <module name="lsx-user-oauth" options="-parameters" />
     </option>
   </component>
