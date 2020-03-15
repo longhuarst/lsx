@@ -10,17 +10,26 @@ import com.lsx.service.tools.ValidCodeGenerator;
 import entity.Result;
 import entity.StatusCode;
 import org.apache.tomcat.util.http.parser.Authorization;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sun.plugin.liveconnect.SecurityContextHelper;
 
+import java.util.Date;
+import java.util.Optional;
+
 //验证码
 @RestController
 @RequestMapping("/valid")
 public class ValidCodeController {
+
+
+    Logger logger = LoggerFactory.getLogger(ValidCodeController.class);
 
     @Autowired
     EmailValidRepository emailValidRepository;
@@ -62,6 +71,27 @@ public class ValidCodeController {
 
 
         try {
+
+            EmailValid example = new EmailValid();
+            example.setEmail(email);
+
+
+            Optional<EmailValid> res = emailValidRepository.findOne(Example.of(example));
+
+
+            if (res.isPresent()){
+                logger.info("找到目标");
+                emailValid.setId(res.get().getId());
+                emailValid.setDate(new Date());
+                logger.info("更新");
+
+            }else{
+                logger.info("未找到目标");
+            }
+
+
+
+
 
             emailValidRepository.save(emailValid);
         }catch (Exception e){
