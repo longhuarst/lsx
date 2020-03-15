@@ -21,6 +21,24 @@ spring:
     admin:
       client:
         url: http://localhost:18892
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: springboot-admin
+    password: admin
+
+  mail:
+    host: smtp.163.com
+    username: lsxweb@163.com
+    password: QWER123456
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    default-encoding: UTF-8
 
 
 

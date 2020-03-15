@@ -82,6 +82,11 @@ public class UserController {
     }
 
 
+
+
+
+
+    //注册普通账户
     @RequestMapping("/register")
     Result register(String username, String password, String email, String validCode){
         User user = new User();

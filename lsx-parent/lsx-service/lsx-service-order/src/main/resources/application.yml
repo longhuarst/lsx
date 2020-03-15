@@ -6,6 +6,7 @@ spring:
     port: 5672
     username: springboot-admin
     password: admin
+    virtual-host: /
   redis:
     host: localhost
     port: 16379
