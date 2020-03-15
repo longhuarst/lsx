@@ -25,7 +25,7 @@ import java.util.Optional;
 
 //验证码
 @RestController
-@RequestMapping("/valid")
+@RequestMapping("/openapi/validCode")
 public class ValidCodeController {
 
 
@@ -40,9 +40,11 @@ public class ValidCodeController {
     @Autowired
     private EmailValidService emailValidService;
 
+
+
     //这个方法需要暴露出去  不需要鉴权
-    @RequestMapping("/get")
-    public Result get(String email){
+    @RequestMapping("/getByEmail")
+    public Result getByEmail(String email){
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        String username = authentication.getPrincipal().toString();
 
@@ -101,6 +103,24 @@ public class ValidCodeController {
 
         return new Result(true, StatusCode.OK, "成功", code);
 
+    }
+
+
+
+
+    //这个方法需要暴露出去  不需要鉴权
+    @RequestMapping("/getByUsername")
+    public Result getByUsername(String username) {
+        User exampleUser = new User();
+
+        Optional<User> res = userRespository.findOne(Example.of(exampleUser));
+
+        if (res.isPresent()){
+            String email = res.get().getMail();
+            return getByEmail(email);
+        }
+
+        return new Result(true, StatusCode.ERROR, "失败", "用户不存在");
     }
 
 

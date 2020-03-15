@@ -13,8 +13,6 @@ public class EmailValidServiceImpl implements EmailValidService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-
-
     public void add(String email, String code){
 
         EmailBean emailBean = new EmailBean();
@@ -23,7 +21,7 @@ public class EmailValidServiceImpl implements EmailValidService {
         emailBean.setContent("感谢使用我们的注册服务， 本次验证码为： "+code+" , 2小时后失效");
 
 
-        rabbitTemplate.convertAndSend("validEmailRequestQueue", (Object) emailBean);
+        rabbitTemplate.convertAndSend("validEmailRequestQueue",  emailBean);
 
     }
 }

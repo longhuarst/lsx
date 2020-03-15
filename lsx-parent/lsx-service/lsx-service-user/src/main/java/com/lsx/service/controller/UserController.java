@@ -2,7 +2,9 @@ package com.lsx.service.controller;
 
 import com.alibaba.druid.support.spring.stat.annotation.Stat;
 import com.alibaba.fastjson.JSON;
+import com.lsx.service.dao.EmailValidRepository;
 import com.lsx.service.dao.UserRespository;
+import com.lsx.service.entity.EmailValid;
 import com.lsx.service.entity.User;
 import com.lsx.service.service.UserService;
 import entity.BCrypt;
@@ -13,6 +15,7 @@ import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,11 +25,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.websocket.server.PathParam;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+
+//利用/openapi/** 暴露
 @RestController
 public class UserController {
 
@@ -34,13 +38,17 @@ public class UserController {
     UserRespository userRespository;
 
 
+    @Autowired
+    private EmailValidRepository emailValidRepository;
+
     static Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
+    // FIXME: 2020/3/16 这个方法已经不适用了， 通过oauth 微服务进行登陆 ！！！
     /*
      * 用户登录
      * */
-    @GetMapping(value = "/login")
+    @GetMapping(value = "/openapi/login")
     public Result login(@PathParam("username") String username, @PathParam("password") String password, HttpServletResponse response){
 
         //查询用户信息
@@ -83,19 +91,59 @@ public class UserController {
 
 
 
+    //这个方法要暴露
+    //查询用户是否可注册
+    @RequestMapping("/openapi/registerValidUser")
+    Result registerValidUser(String username){
+        //先校验用户是否存在
+        User exampleUser = new User();
+        exampleUser.setUsername(username);
+        Optional<User> res= userRespository.findOne(Example.of(exampleUser));
+        if (res.isPresent()){
+            return new Result(true, StatusCode.ERROR, "失败","用户已存在");
+        }
+
+        return new Result(true, StatusCode.OK, "成功","用户不存在");
+    }
+
 
 
 
     //注册普通账户
-    @RequestMapping("/register")
+    @RequestMapping("/openapi/register")
     Result register(String username, String password, String email, String validCode){
         User user = new User();
 
 
+        //先校验用户是否存在
+        User exampleUser = new User();
+        exampleUser.setUsername(username);
+        Optional<User> res= userRespository.findOne(Example.of(exampleUser));
+        if (res.isPresent()){
+            return new Result(true, StatusCode.ERROR, "注册失败","用户已存在");
+        }
+
 
         //验证email
+        EmailValid example = new EmailValid();
+        example.setEmail(email);
+        Optional<EmailValid> emailValid = emailValidRepository.findOne(Example.of(example));
+
+        if (emailValid.isPresent()){
+            Date cur = new Date();
+            if (emailValid.get().getDate().getTime() - cur.getTime() > 1000*3600*24*2){
+                return new Result(true, StatusCode.ERROR, "注册失败","验证码过期");
+            }
+
+            if (!emailValid.get().getCode().equals(validCode)){
+                return new Result(true, StatusCode.ERROR, "注册失败","验证码错误");
+            }
+        }else{
+            return new Result(true, StatusCode.ERROR, "注册失败","请先发送验证邮件");
+        }
 
 
+        logger.info("用户" + username+"邮箱"+email+"验证通过");
 
 
         user.setPassword(new BCryptPasswordEncoder().encode(password));
@@ -177,6 +225,138 @@ public class UserController {
         }
 
         return new Result(true, StatusCode.OK, "注册成功", resUser);
+
+    }
+
+
+
+
+
+
+
+    //忘记密码  用户名
+    @RequestMapping("openapi/forgetPasswordByUsername")
+    @Transactional //事务
+    public Result forgetPassword(String username, String code, String newPassword){
+
+        User example = new User();
+        example.setUsername(username);
+
+        Optional<User> res = userRespository.findOne(Example.of(example));
+        if (res.isPresent()){
+
+            String email = res.get().getMail();
+
+            EmailValid emailValid = new EmailValid();
+            emailValid.setEmail(email);
+
+            Optional<EmailValid> resEmail = emailValidRepository.findOne(Example.of(emailValid));
+            if (resEmail.isPresent()){
+                Date now = new Date();
+                if (resEmail.get().getDate().getTime() - now.getTime() > 1000*3600*24*2 ){
+                    return new Result(true, StatusCode.ERROR, "失败", "验证码过期了");
+                }
+
+                if (resEmail.get().getCode().equals(code)){
+
+                    //
+                    User newUser = res.get();
+                    newUser.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+
+                    userRespository.save(newUser);
+
+                    return new Result(false, StatusCode.OK, "成功");
+
+                }else{
+                    return new Result(true, StatusCode.ERROR, "失败", "验证码错误");
+                }
+
+            }else{
+                return new Result(true, StatusCode.ERROR, "失败", "请先获取验证码");
+            }
+
+
+        }else{
+            return new Result(true, StatusCode.ERROR, "失败", "用户不存在");
+        }
+
+    }
+
+
+    //忘记密码  邮箱
+    @RequestMapping("openapi/forgetPasswordByEmail")
+    @Transactional //事务
+    public Result forgetPasswordByEmail(String email, String code, String newPassword) {
+        EmailValid emailValid = new EmailValid();
+        emailValid.setEmail(email);
+
+        Optional<EmailValid> resEmail = emailValidRepository.findOne(Example.of(emailValid));
+        if (resEmail.isPresent()){
+            Date now = new Date();
+            if (resEmail.get().getDate().getTime() - now.getTime() > 1000*3600*24*2 ){
+                return new Result(true, StatusCode.ERROR, "失败", "验证码过期了");
+            }
+
+            if (resEmail.get().getCode().equals(code)){
+
+                User exampleUser = new User();
+                exampleUser.setMail(email);
+                //
+                Optional<User> newUser = userRespository.findOne(Example.of(exampleUser));
+
+                if (newUser.isPresent()){
+
+                    User saveUser = newUser.get();
+                    saveUser.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+
+                    userRespository.save(saveUser);
+
+                    return new Result(false, StatusCode.OK, "成功");
+                }else{
+                    return new Result(true, StatusCode.ERROR, "失败", "用户不存在");
+                }
+
+
+            }else{
+                return new Result(true, StatusCode.ERROR, "失败", "验证码错误");
+            }
+
+        }else{
+            return new Result(true, StatusCode.ERROR, "失败", "请先获取验证码");
+        }
+
+    }
+
+
+
+
+
+
+    //修改密码
+    @RequestMapping("/changePassword")
+    @Transactional //事务
+    public Result changePassword(String newPassword){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+        User example = new User();
+        example.setUsername(username);
+
+        Optional<User> res = userRespository.findOne(Example.of(example));
+
+        if (res.isPresent()){
+
+            User newUser = res.get();
+            newUser.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+
+            userRespository.save(newUser);
+
+            return new Result(false, StatusCode.OK, "成功");
+
+
+        }else{
+            return new Result(true, StatusCode.ERROR, "失败", "用户不存在");
+        }
 
     }
 

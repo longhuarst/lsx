@@ -32,10 +32,16 @@ public class MailUtil {
             mailMessage.setText(mailBean.getContent());
             //mailMessage.copyTo(copyTo);
 
+            if(javaMailSender == null)
+                logger.info("javaMailSender is null");
+
             javaMailSender.send(mailMessage);
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("邮件发送失败", e.getMessage());
         }
+
+        logger.info("邮件发送成功");
     }
 }
 
