@@ -1,7 +1,6 @@
 package com.lsx.service.rabbitmq;
 
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,9 +13,20 @@ public class RabbitmqConfig {
     @Bean
     public Queue validEmailRequestQueue(){
         System.out.println("validEmailRequestQueue-------------------------");
-        return new Queue("validEmailRequestQueue", false);
+        return new Queue("validEmailRequestQueue", true);
     }
 
+    @Bean
+    public TopicExchange topicExchange(){
+        return new TopicExchange("validEmailRequestExchange");
+    }
+
+
+    @Bean
+    Binding bindingEmail(){
+        return BindingBuilder.bind(validEmailRequestQueue()).to(topicExchange()).with("email.key");
+
+    }
 
 
 }
