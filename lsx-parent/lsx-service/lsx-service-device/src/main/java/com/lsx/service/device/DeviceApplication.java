@@ -1,6 +1,7 @@
 package com.lsx.service.device;
 
 
+import com.lsx.service.device.configure.DefaultDeviceTypeConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -23,4 +24,11 @@ public class DeviceApplication {
         SpringApplication.run(DeviceApplication.class, args);
 
     }
+
+
+//
+//    @Bean
+//    public DefaultDeviceTypeConfig defaultDeviceTypeConfig(){
+//        return new DefaultDeviceTypeConfig();
+//    }
 }

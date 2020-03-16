@@ -19,6 +19,8 @@ public class Device implements Serializable {
     Integer id;
 
 
+//     F-I-X-M-E: 2020/3/16 这个字段 空闲， 无作用暂时      原先 做 一对一绑定， 可能会有问题  暂时不实用
+    //fixed : 创建设备的管理员名字
     @Column(name = "username", unique = false, nullable = false)
     String username;
 

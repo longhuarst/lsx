@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -51,6 +52,7 @@ public class DeviceController {
     //创建设备
     // 创建设备后，应该给设备赋予一个token device权限的token ，用于设备鉴权
     @RequestMapping("/createDevice")
+    @PreAuthorize("hasAnyAuthority('DeviceManager')")   //拥有设备管理管理权限的人才可以创建设备
     Result createDevice(String username, String type, String name, String info){
         if (username == null)
             return new Result(false, StatusCode.ERROR,"空的用户名");
@@ -123,6 +125,47 @@ public class DeviceController {
     }
 
 
+    // FIXME: 2020/3/16 注意  这个版本 删除删除 后 设备 的历史数据还会被保存
+    //删除设备
+    @RequestMapping("deleteDeviceByUuid")
+    @PreAuthorize("hasAnyAuthority('DeviceManager')")
+    Result deleteDeviceByUuid(String uuid){
+
+
+
+
+
+        logger.info("正在删除 uuid = "+uuid+" 的设备");
+
+        try{
+            deviceRespository.deleteByUuid(uuid);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false, StatusCode.ERROR, e.getMessage());
+        }
+
+        return new Result(false, StatusCode.OK, "成功");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
 
 
     @RequestMapping("/refreshDeviceToken")
@@ -153,24 +196,35 @@ public class DeviceController {
     }
 
 
-    @RequestMapping("deleteDeviceByUuid")
-    Result deleteDeviceByUuid(String uuid){
 
 
 
+    //获取设备信息
+    @RequestMapping("/getDeviceInfoByUuid")
+//    @PreAuthorize("hasAnyAuthority('user')")
+    Result getDeviceInfoByUuid(String uuid){
 
 
-        logger.info("正在删除 uuid = "+uuid+" 的设备");
+        logger.info("----getDeviceInfoByUuid----");
+        Device example = new Device();
+        example.setUuid(uuid);
 
-        try{
-            deviceRespository.deleteByUuid(uuid);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Result(false, StatusCode.ERROR, e.getMessage());
+
+        Optional<Device> resDevice = deviceRespository.findOne(Example.of(example));
+
+
+        if (resDevice.isPresent()){
+
+            return new Result(true, StatusCode.OK, "成功", resDevice.get());
+        }else{
+            return new Result(true, StatusCode.ERROR, "失败", "查无此设备");
         }
 
-        return new Result(false, StatusCode.OK, "成功");
+
+
+
     }
+
 
 
 

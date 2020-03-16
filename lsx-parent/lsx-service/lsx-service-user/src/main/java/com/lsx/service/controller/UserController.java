@@ -111,8 +111,10 @@ public class UserController {
 
     //注册普通账户
     @RequestMapping("/openapi/register")
-    Result register(String username, String password, String email, String validCode){
+    Result register(String username, String password, String email, String validCode,String address, String nickName, String phone, String qq, String wx ){
         User user = new User();
+
+
 
 
         //先校验用户是否存在
@@ -151,6 +153,11 @@ public class UserController {
         user.setUsername(username);
         user.setUuid(UUID.randomUUID().toString());
         user.setMail(email);
+        user.setAddress(address);
+        user.setName(nickName);
+        user.setPhone(phone);
+        user.setQq(qq);
+        user.setWechat(wx);
 
         User resUser = null;
         try{

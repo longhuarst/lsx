@@ -48,6 +48,12 @@ public class ValidCodeController {
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        String username = authentication.getPrincipal().toString();
 
+        logger.info("email = " +email );
+
+        if(!email.matches("^\\w+@(\\w+\\.)+\\w+$")) {
+            return new Result(true, StatusCode.ERROR, "失败", "邮箱地址不正确");
+        }
+
         User user = null;
 
         try {
