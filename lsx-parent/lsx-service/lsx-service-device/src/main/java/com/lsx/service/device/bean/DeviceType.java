@@ -4,12 +4,13 @@ package com.lsx.service.device.bean;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 //动态数据类型
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class DeviceType {
+public class DeviceType implements Serializable {
 
 
     @Id

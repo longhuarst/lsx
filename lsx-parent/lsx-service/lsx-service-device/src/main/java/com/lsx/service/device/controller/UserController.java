@@ -1,10 +1,13 @@
 package com.lsx.service.device.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.lsx.service.device.bean.Device;
 import com.lsx.service.device.bean.DeviceBinding;
 import com.lsx.service.device.bean.DeviceMessage;
 import com.lsx.service.device.respository.DeviceBindingRepository;
 import com.lsx.service.device.respository.DeviceMessageRespository;
+import com.lsx.service.device.respository.DeviceRespository;
 import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +15,11 @@ import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,9 +35,13 @@ public class UserController {
     @Autowired
     private DeviceBindingRepository deviceBindingRepository;
 
+    @Autowired
+    DeviceRespository deviceRespository;
+
 
 
     @RequestMapping("/loadDataByUuId")
+    @CrossOrigin(origins = "*")
     @PreAuthorize("hasAnyAuthority('user')") //普通用户权限
     public Result loadDataByUuId(String uuid){
 
@@ -79,6 +88,7 @@ public class UserController {
     //加载所有绑定的设备
     @RequestMapping("/loadAllBindingDevice")
     @PreAuthorize("hasAnyAuthority('user')")
+    @CrossOrigin(origins = "*")
     public Result loadAllBindingDevice(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getPrincipal().toString();
@@ -88,7 +98,28 @@ public class UserController {
 
         List<DeviceBinding> deviceBindingList = deviceBindingRepository.findAll(Example.of(example));
 
-        return new Result(true, StatusCode.OK, "成功", deviceBindingList);
+//        JSONObject resObject = new JSONObject();
+
+        List<JSONObject> rsList = new ArrayList<>();
+
+        for (int i=0;i<deviceBindingList.size(); ++i){
+            JSONObject object = new JSONObject();
+            Device exampleDevice = new Device();
+            exampleDevice.setUuid(deviceBindingList.get(i).getUuid());
+            Optional<Device> rs = deviceRespository.findOne(Example.of(exampleDevice));
+            if (rs.isPresent()){
+                object.put("key",String.valueOf(i));
+                object.put("name", rs.get().getName());
+                object.put("type", rs.get().getType());
+                object.put("uuid", rs.get().getUuid());
+
+                rsList.add(object);
+            }
+        }
+
+
+
+        return new Result(true, StatusCode.OK, "成功", rsList);
     }
 
 

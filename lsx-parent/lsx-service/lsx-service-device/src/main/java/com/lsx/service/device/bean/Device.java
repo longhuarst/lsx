@@ -46,8 +46,8 @@ public class Device implements Serializable {
     @Column(name = "type", nullable = false)
     String type;
 
-    @Column(name = "token", nullable = false, columnDefinition = "blob")
-    AuthToken token;
+    @Column(name = "token", nullable = false)
+    String token;
 
 
     public Integer getId() {
@@ -107,11 +107,11 @@ public class Device implements Serializable {
     }
 
 
-    public AuthToken getToken() {
+    public String getToken() {
         return token;
     }
 
-    public void setToken(AuthToken token) {
+    public void setToken(String token) {
         this.token = token;
     }
 }

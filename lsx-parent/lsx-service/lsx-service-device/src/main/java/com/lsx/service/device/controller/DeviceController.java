@@ -2,7 +2,9 @@ package com.lsx.service.device.controller;
 
 
 import com.lsx.service.device.bean.Device;
+import com.lsx.service.device.bean.DeviceBinding;
 import com.lsx.service.device.bean.DeviceMessage;
+import com.lsx.service.device.respository.DeviceBindingRepository;
 import com.lsx.service.device.respository.DeviceMessageRespository;
 import com.lsx.service.device.respository.DeviceRespository;
 import com.lsx.service.device.service.DeviceService;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,6 +50,10 @@ public class DeviceController {
 
     @Autowired
     private DeviceMessageRespository deviceMessageRespository;
+
+
+    @Autowired
+    private DeviceBindingRepository deviceBindingRepository;
 
 
     //创建设备
@@ -91,11 +98,11 @@ public class DeviceController {
 
 
 
-        AuthToken authToken = new AuthToken();
-
-        authToken.setAccessToken(token);
-        authToken.setRefreshToken(null); //无法刷新令牌
-        authToken.setJti(null); //无jti
+//        AuthToken authToken = new AuthToken();
+//
+//        authToken.setAccessToken(token);
+//        authToken.setRefreshToken(null); //无法刷新令牌
+//        authToken.setJti(null); //无jti
 
         //授权 发布token
 //        try {
@@ -105,7 +112,7 @@ public class DeviceController {
 //            return new Result(false, StatusCode.ERROR, "创建失败，需要联系管理员");
 //        }
 
-        device.setToken(authToken);
+        device.setToken(token);
 
 
 
@@ -201,8 +208,11 @@ public class DeviceController {
 
     //获取设备信息
     @RequestMapping("/getDeviceInfoByUuid")
-//    @PreAuthorize("hasAnyAuthority('user')")
+    @PreAuthorize("hasAnyAuthority('user')")
     Result getDeviceInfoByUuid(String uuid){
+
+
+        logger.info("getDeviceInfoByUuid, uuid= "+uuid);
 
 
         logger.info("----getDeviceInfoByUuid----");
@@ -210,21 +220,65 @@ public class DeviceController {
         example.setUuid(uuid);
 
 
-        Optional<Device> resDevice = deviceRespository.findOne(Example.of(example));
+        try {
+            Optional<Device> resDevice = deviceRespository.findOne(Example.of(example));
 
+            if (resDevice.isPresent()){
 
-        if (resDevice.isPresent()){
+                return new Result(true, StatusCode.OK, "成功", resDevice.get());
+            }else{
+                return new Result(true, StatusCode.ERROR, "失败", "查无此设备");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
 
-            return new Result(true, StatusCode.OK, "成功", resDevice.get());
-        }else{
-            return new Result(true, StatusCode.ERROR, "失败", "查无此设备");
+            return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
         }
+
+
 
 
 
 
     }
 
+
+
+    //绑定设备
+    @RequestMapping("/binding")
+    @PreAuthorize("hasAnyAuthority('user')")
+    @CrossOrigin
+    public Result binding(String uuid){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+        //先查询是否存在
+        DeviceBinding deviceBinding = new DeviceBinding();
+        deviceBinding.setUsername(username);
+        deviceBinding.setUuid(uuid);
+
+        Optional<DeviceBinding> res = null;
+
+        try {
+            res = deviceBindingRepository.findOne(Example.of(deviceBinding));
+        }catch (Exception e){
+            e.printStackTrace();;
+        }
+
+        if (res.isPresent()){
+            return new Result(true, StatusCode.ERROR, "失败", "不能重复绑定");
+        }
+
+        try {
+            deviceBindingRepository.save(deviceBinding);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+        return new Result(true, StatusCode.OK, "成功", "绑定成功");
+
+    }
 
 
 
