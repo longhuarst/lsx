@@ -10,6 +10,7 @@ import com.lsx.service.device.respository.DeviceRespository;
 import com.lsx.service.device.service.DeviceService;
 import com.lsx.service.device.service.TokenService;
 import com.lsx.service.device.util.AuthToken;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.ErrorMessages_zh_CN;
 import entity.Result;
 import entity.StatusCode;
 import org.slf4j.Logger;
@@ -132,20 +133,94 @@ public class DeviceController {
     }
 
 
+    @RequestMapping("createDeviceWithToken")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    Result createDeviceWithToken(String type, String name, String info){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+        if (type == null)
+            return new Result(false, StatusCode.ERROR, "空的类型");
+
+        if (name == null)
+            return new Result(false, StatusCode.ERROR, "空的名字");
+
+//        if (info == null)
+//            return new Result(false, StatusCode.ERROR, "空的信息");
+
+        String uuid = UUID.randomUUID().toString();
+        Device device = new Device();
+        device.setUsername(username);
+        device.setUuid(uuid);
+        device.setName(name);
+
+        if (info != null)
+            device.setInfo(info);
+
+        device.setType(type);
+
+
+        Device retDevice;
+
+        //生成令牌
+        //令牌有效期 1 年
+        long time = new Date().getTime() / 1000 + 365*24*3600;
+        String token = tokenService.getToken(username, uuid, time);
+
+        device.setToken(token);
+
+
+
+        try {
+            retDevice = deviceRespository.save(device);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(false,StatusCode.ERROR, e.getMessage());
+        }
+
+
+
+
+
+        return new Result(true, StatusCode.OK, "创建成功", retDevice);
+
+    }
+
+
+
     // FIXME: 2020/3/16 注意  这个版本 删除删除 后 设备 的历史数据还会被保存
     //删除设备
     @RequestMapping("deleteDeviceByUuid")
-    @PreAuthorize("hasAnyAuthority('DeviceManager')")
+    @PreAuthorize("hasAnyAuthority('admin')")
     Result deleteDeviceByUuid(String uuid){
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
 
+        Device example = new Device();
+
+        example.setUsername(username);
+        example.setUuid(uuid);
+
+        Device rs = null;
+        try {
+            Optional<Device> rso = deviceRespository.findOne(Example.of(example));
+            if (rso.isPresent()){
+                rs = rso.get();
+            }else{
+                return new Result(true, StatusCode.ERROR, "失败", "设备不存在");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "失败", "数据库查询出错");
+        }
 
 
 
         logger.info("正在删除 uuid = "+uuid+" 的设备");
 
         try{
-            deviceRespository.deleteByUuid(uuid);
+            deviceRespository.delete(rs);
         }catch (Exception e){
             e.printStackTrace();
             return new Result(false, StatusCode.ERROR, e.getMessage());

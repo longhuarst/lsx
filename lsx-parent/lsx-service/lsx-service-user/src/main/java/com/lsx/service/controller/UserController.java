@@ -449,4 +449,32 @@ public class UserController {
 
         return new Result<>(true, StatusCode.OK, "成功", user);
     }
+
+
+
+
+
+    //获取用户的权限
+    @RequestMapping("/getRole")
+//    @PreAuthorize("hasAnyAuthority('user')")
+    Result getRole(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+        User user = userRespository.findByUsername(username);
+
+        if (user == null)
+            return new Result(true, StatusCode.ERROR, "失败", "用户不存在");
+
+
+
+        String res[] =  user.getRole().split(",");
+
+
+
+        return new Result(true, StatusCode.OK, "成功", res);
+
+
+    }
 }

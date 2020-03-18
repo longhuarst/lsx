@@ -116,7 +116,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //                .antMatchers("/findByUsername/{username}")
                 .antMatchers("/valid/**").permitAll()  //允许验证服务
                 .antMatchers("/openapi/**").permitAll() //暴露 openapi
-                .anyRequest().authenticated();//其他都要认证才能访问
+                .anyRequest().permitAll();//其他都要认证才能访问
 
     }
 }

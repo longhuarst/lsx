@@ -123,6 +123,39 @@ public class UserController {
     }
 
 
+
+    //加载所有绑定的设备 --- 某个管理员创建的
+    @RequestMapping("/loadAllAdminDevice")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @CrossOrigin(origins = "*")
+    public Result loadAllAdminDevice(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+        Device example = new Device();
+        example.setUsername(username);
+
+        List<Device> deviceList = deviceRespository.findAll(Example.of(example));
+
+
+        List<JSONObject> rsList = new ArrayList<>();
+
+        for (int i=0;i<deviceList.size(); ++i){
+            JSONObject object = new JSONObject();
+                object.put("key",String.valueOf(i));
+                object.put("name", deviceList.get(i).getName());
+                object.put("type", deviceList.get(i).getType());
+                object.put("uuid", deviceList.get(i).getUuid());
+
+                rsList.add(object);
+        }
+
+
+
+        return new Result(true, StatusCode.OK, "成功", rsList);
+    }
+
+
     //加载所有绑定的用户 【设备管理员才可以】
     @RequestMapping("/loadAllUsersWhoBindingByUuid")
     @PreAuthorize("hasAnyAuthority('DeviceManager')")
