@@ -20,6 +20,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -403,6 +404,63 @@ public class DeviceController {
 
         return new Result(false, StatusCode.OK, "success");
     }
+
+
+
+
+    //只有持有device 权限的消息才能 读取
+    @RequestMapping("getDeviceMessage")
+    @PreAuthorize("hasAuthority('user')")
+    Result getDeviceMessage(String uuid) {
+
+        //uuid 在 authorization 中
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String principal = authentication.getPrincipal().toString();
+        logger.info("principal = " + principal);
+
+
+        String username = principal;
+
+
+        //先鉴权
+        DeviceBinding deviceBindingExample = new DeviceBinding();
+        deviceBindingExample.setUsername(username);
+        deviceBindingExample.setUuid(uuid);
+
+        try{
+
+            Optional<DeviceBinding> rs = deviceBindingRepository.findOne(Example.of(deviceBindingExample));
+            if (rs.isPresent()){
+
+            }else{
+                return new Result(true, StatusCode.ERROR, "失败", "无法获取未绑定的设备");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+        DeviceMessage example = new DeviceMessage();
+        example.setUuid(uuid);
+
+
+        try {
+            List<DeviceMessage> deviceMessageList = deviceMessageRespository.findAll(Example.of(example));
+
+            return new Result(true, StatusCode.OK, "成功", deviceMessageList);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+    }
+
+
+
 
 
 
