@@ -408,6 +408,71 @@ public class DeviceController {
 
 
 
+    //这个 接口提供用户测试上传
+    //只有持有device 权限的消息才能 上传
+    @RequestMapping("userTestUpload")
+    @PreAuthorize("hasAuthority('user')")
+    Result upload(String uuid, String topic, String msg){
+
+        //uuid 在 authorization 中
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String principal = authentication.getPrincipal().toString();
+        logger.info("principal = " + principal);
+
+
+        String username = principal;
+
+
+        //先鉴权
+        DeviceBinding deviceBindingExample = new DeviceBinding();
+        deviceBindingExample.setUsername(username);
+        deviceBindingExample.setUuid(uuid);
+
+        try{
+
+            Optional<DeviceBinding> rs = deviceBindingRepository.findOne(Example.of(deviceBindingExample));
+            if (rs.isPresent()){
+
+            }else{
+
+                //是否是创建者
+                Device deviceExample = new Device();
+                deviceExample.setUuid(uuid);
+                deviceExample.setUsername(username);
+
+                Optional<Device> rsDevice = deviceRespository.findOne(Example.of(deviceExample));
+
+                if (!rsDevice.isPresent()){
+                    return new Result(true, StatusCode.ERROR, "失败", "无法测试未绑定的设备");
+                }
+
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+
+        DeviceMessage deviceMessage = new DeviceMessage();
+        deviceMessage.setUuid(uuid);
+        deviceMessage.setMsg(msg);
+        deviceMessage.setTopic(topic);
+
+        try {
+            deviceMessageRespository.save(deviceMessage);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+        return new Result(false, StatusCode.OK, "成功");
+
+    }
+
+
     //只有持有device 权限的消息才能 读取
     @RequestMapping("getDeviceMessage")
     @PreAuthorize("hasAuthority('user')")
@@ -434,7 +499,17 @@ public class DeviceController {
             if (rs.isPresent()){
 
             }else{
-                return new Result(true, StatusCode.ERROR, "失败", "无法获取未绑定的设备");
+
+                //是否是创建者
+                Device deviceExample = new Device();
+                deviceExample.setUuid(uuid);
+                deviceExample.setUsername(username);
+
+                Optional<Device> rsDevice = deviceRespository.findOne(Example.of(deviceExample));
+
+                if (!rsDevice.isPresent()) {
+                    return new Result(true, StatusCode.ERROR, "失败", "无法获取未绑定的设备");
+                }
             }
 
         }catch (Exception e){
@@ -448,6 +523,8 @@ public class DeviceController {
 
         try {
             List<DeviceMessage> deviceMessageList = deviceMessageRespository.findAll(Example.of(example));
+
+//            logger.info(deviceMessageList.get(0).toString());
 
             return new Result(true, StatusCode.OK, "成功", deviceMessageList);
 

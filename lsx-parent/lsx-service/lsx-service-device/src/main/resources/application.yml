@@ -15,6 +15,10 @@ spring:
         hbm2ddl:
           auto: update
     show-sql: true
+    # 时区设置
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 
 server:
   port: 18887
@@ -44,3 +48,6 @@ debug: true
 logging:
   level:
     root: debug
+
+
+
