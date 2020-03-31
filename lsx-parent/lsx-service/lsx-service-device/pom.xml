@@ -18,6 +18,13 @@
             <artifactId>spring-integration-websocket</artifactId>
             <version>5.2.4.RELEASE</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.36.Final</version>
+        </dependency>
     </dependencies>
 
 

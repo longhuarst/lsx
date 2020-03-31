@@ -2,6 +2,7 @@ package com.lsx.service.device;
 
 
 import com.lsx.service.device.configure.DefaultDeviceTypeConfig;
+import com.lsx.service.device.netty.NettyServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -22,6 +23,12 @@ public class DeviceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DeviceApplication.class, args);
+
+        //启动服务端
+
+
+        NettyServer nettyServer = new NettyServer();
+        nettyServer.start();
 
     }
 

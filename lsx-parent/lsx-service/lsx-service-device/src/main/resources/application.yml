@@ -44,10 +44,15 @@ encrypt:
     #证书的密码
     password: lsxlsx
 
-debug: true
-logging:
-  level:
-    root: debug
+#debug: true
+#logging:
+#  level:
+#    root: debug
+
+
+zookeeper:
+  address: 127.0.0.1:2181
+  timeout: 4000
 
 
 
