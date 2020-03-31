@@ -72,7 +72,11 @@ public class DeviceWebSocket {
     @OnMessage
     public void onMessage(String message) {
         logger.info("服务端收到客户端发来的消息: {}", message);
-        this.sendAll(message);
+//        this.sendAll(message);
+
+
+
+
 
         logger.info("当前客户数:"+clients.size());
     }
