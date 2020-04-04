@@ -25,6 +25,22 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.36.Final</version>
         </dependency>
+
+
+
+        <!--        RABBITMQ-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 

@@ -10,11 +10,15 @@ import com.lsx.service.device.respository.DeviceMessageRespository;
 import com.lsx.service.device.respository.DeviceRespository;
 import entity.Result;
 import entity.StatusCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +43,70 @@ public class UserController {
     DeviceRespository deviceRespository;
 
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+
+    static Logger logger = LoggerFactory.getLogger(UserController.class);
+
+
+
+    @RequestMapping("loadRealTimeDateByUuid")
+    @PreAuthorize("hasAnyAuthority('user')")
+    public Result loadRealTimeDateByUuid(String uuid){
+
+        //先验证 用户是否绑定是这个 uuid
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+
+        // FIXME: 2020/4/4 这里最好 放入redis 缓存 减少数据库查询时间  因为这个操作是要经常操作的
+        try{
+            DeviceBinding example = new DeviceBinding();
+            example.setUsername(username);
+            example.setUuid(uuid);
+
+            Optional<DeviceBinding> res = deviceBindingRepository.findOne(Example.of(example));
+
+            if (!res.isPresent()){
+                //未绑定
+                //是否是创建者
+                Device deviceExample = new Device();
+                deviceExample.setUuid(uuid);
+                deviceExample.setUsername(username);
+
+                Optional<Device> rsDevice = deviceRespository.findOne(Example.of(deviceExample));
+
+                if (!rsDevice.isPresent()) {
+                    return new Result(true, StatusCode.ERROR, "失败", "无法获取未绑定的设备");
+                }
+//                return new Result(true , StatusCode.ERROR, "失败", "权限不足");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true , StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+
+        String redisKey = "dm_"+uuid;
+
+
+        logger.info("redis size  = "+redisTemplate.opsForList().size(redisKey));
+
+
+        List<String> realTimeData = new ArrayList<>();
+        String col = redisTemplate.opsForList().rightPop(redisKey);
+        while (col != null){
+            realTimeData.add(col);
+            col = redisTemplate.opsForList().rightPop(redisKey);
+        }
+
+
+        return new Result(true, StatusCode.OK , "成功", realTimeData);
+    }
+
+
 
     @RequestMapping("/loadDataByUuId")
     @CrossOrigin(origins = "*")
@@ -59,7 +127,21 @@ public class UserController {
 
             if (!res.isPresent()){
                 //未绑定
-                return new Result(true , StatusCode.ERROR, "失败", "权限不足");
+
+
+                //是否是创建者
+                Device deviceExample = new Device();
+                deviceExample.setUuid(uuid);
+                deviceExample.setUsername(username);
+
+                Optional<Device> rsDevice = deviceRespository.findOne(Example.of(deviceExample));
+
+                if (!rsDevice.isPresent()) {
+                    return new Result(true, StatusCode.ERROR, "失败", "无法获取未绑定的设备");
+                }
+
+
+//                return new Result(true , StatusCode.ERROR, "失败", "权限不足");
             }
 
         }catch (Exception e){

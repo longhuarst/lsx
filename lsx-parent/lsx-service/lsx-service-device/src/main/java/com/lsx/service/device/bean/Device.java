@@ -46,7 +46,7 @@ public class Device implements Serializable {
     @Column(name = "type", nullable = false)
     String type;
 
-    @Column(name = "token", nullable = false)
+    @Column(name = "token",columnDefinition = "varchar(1024)", nullable = false)
     String token;
 
 

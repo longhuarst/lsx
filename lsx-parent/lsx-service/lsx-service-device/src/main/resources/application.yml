@@ -9,6 +9,14 @@ spring:
   redis:
     host: localhost
     port: 16379
+    password:
+    database: 0
+    lettuce:
+      pool:
+        max-active: 32
+        max-wait: 300ms
+        max-idle: 16
+        min-idle: 8
   jpa:
     properties:
       hibernate:
@@ -19,6 +27,11 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: springboot-admin
+    password: admin
 
 server:
   port: 18887

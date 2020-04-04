@@ -4,6 +4,8 @@ package com.lsx.service.device.controller;
 import com.lsx.service.device.bean.Device;
 import com.lsx.service.device.bean.DeviceBinding;
 import com.lsx.service.device.bean.DeviceMessage;
+import com.lsx.service.device.netty.NettyServerHandler;
+import com.lsx.service.device.netty.utils.IpUtil;
 import com.lsx.service.device.respository.DeviceBindingRepository;
 import com.lsx.service.device.respository.DeviceMessageRespository;
 import com.lsx.service.device.respository.DeviceRespository;
@@ -13,6 +15,8 @@ import com.lsx.service.device.util.AuthToken;
 import com.sun.org.apache.xalan.internal.xsltc.runtime.ErrorMessages_zh_CN;
 import entity.Result;
 import entity.StatusCode;
+import io.netty.channel.Channel;
+import io.netty.channel.group.ChannelGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -533,6 +538,61 @@ public class DeviceController {
             e.printStackTrace();
             return new Result(true, StatusCode.ERROR, "失败", e.getMessage());
         }
+
+    }
+
+
+    //发布消息给设备
+    @RequestMapping("publishToDevice")
+    @PreAuthorize("hasAnyAuthority('user')")
+    public Result publishToDeviceByUuid(HttpServletRequest request, String topic, String uuid, String msg){
+
+        //先验证 用户是否绑定是这个 uuid
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+
+
+        // FIXME: 2020/4/4 这里最好 放入redis 缓存 减少数据库查询时间  因为这个操作是要经常操作的
+        try{
+            DeviceBinding example = new DeviceBinding();
+            example.setUsername(username);
+            example.setUuid(uuid);
+
+            Optional<DeviceBinding> res = deviceBindingRepository.findOne(Example.of(example));
+
+            if (!res.isPresent()){
+                //未绑定
+                //是否是创建者
+                Device deviceExample = new Device();
+                deviceExample.setUuid(uuid);
+                deviceExample.setUsername(username);
+
+                Optional<Device> rsDevice = deviceRespository.findOne(Example.of(deviceExample));
+
+                if (!rsDevice.isPresent()) {
+                    return new Result(true, StatusCode.ERROR, "失败", "权限不足");
+                }
+//                return new Result(true , StatusCode.ERROR, "失败", "权限不足");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result(true , StatusCode.ERROR, "失败", e.getMessage());
+        }
+
+
+
+        //验证完毕
+        ChannelGroup channels = NettyServerHandler.topicMap.get(topic);
+        if (channels != null){
+            for (Channel channel : channels){
+                String sendMsg = "pub_"+uuid+"_"+topic+"_http_"+ request.getRemoteHost().toString() +":"+msg+"\r\n";
+                channel.writeAndFlush(sendMsg);
+            }
+        }
+
+
+        return new Result(true,StatusCode.OK, "成功", channels.size());
 
     }
 
