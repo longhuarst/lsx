@@ -34,7 +34,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter{
 
 
 
-    static Set<Client> clientList = new ConcurrentSkipListSet<Client>();
+    public static Set<Client> clientList = new ConcurrentSkipListSet<Client>();
     static Map<ChannelHandlerContext, Client> clientMap = new ConcurrentHashMap<>();
 
 
@@ -90,6 +90,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter{
         logger.info("channelActive");
 
 
+        NettySpringStatisticTimer.statistic.addCps();//增加每秒连接数
+
         logger.info("size = "+clientMap.size());
         //增加一个新的
         clientMap.put(ctx,new Client());
@@ -110,6 +112,10 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         logger.info("channelInactive");
+
+
+
+        NettySpringStatisticTimer.statistic.addDps();//增加每秒断开连接数
 
         logger.info("size = "+clientMap.size());
         clientMap.remove(ctx); //删除一个
@@ -182,6 +188,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter{
             }
 
 
+            //增加报文统计
+            NettySpringStatisticTimer.statistic.addPps();
 
             switch (start){
                 case "pub":

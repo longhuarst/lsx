@@ -30,7 +30,7 @@ spring:
   mail:
     host: smtp.163.com
     username: lsxweb@163.com
-    password: QWER123456
+    password: EDPTSLZATLTKYFQD
     properties:
       mail:
         smtp:

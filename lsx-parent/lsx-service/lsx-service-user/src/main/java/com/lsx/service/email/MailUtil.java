@@ -30,7 +30,10 @@ public class MailUtil {
             mailMessage.setTo(mailBean.getRecipient());
             mailMessage.setSubject(mailBean.getSubject());
             mailMessage.setText(mailBean.getContent());
-            //mailMessage.copyTo(copyTo);
+
+
+
+            logger.info("邮件内容 = "+mailBean.toString());
 
             if(javaMailSender == null)
                 logger.info("javaMailSender is null");
